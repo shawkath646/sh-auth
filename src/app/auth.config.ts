@@ -1,5 +1,5 @@
 import { NextAuthConfig } from "next-auth";
-import { FirestoreAdapter } from "@auth/firebase-adapter";
+import { FirestoreAdapter } from "@/lib/database/firebase-adapter";
 import Google from "next-auth/providers/google";
 import Facebook from "next-auth/providers/facebook";
 import GitHub from "next-auth/providers/github";
