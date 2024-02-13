@@ -31,3 +31,14 @@ body {
     text-wrap: balance;
   }
 }
+
+.customDatePickerWidth, 
+.customDatePickerWidth > div.react-datepicker-wrapper, 
+.customDatePickerWidth > div > div.react-datepicker__input-container
+.customDatePickerWidth > div > div.react-datepicker__input-container input {
+   width: 100%;
+}
+
+.react-datepicker-popper {
+  z-index: 99!important;
+}
