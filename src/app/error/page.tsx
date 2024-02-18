@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { PagePropsType } from "@/types/types";
 import MessageList from "@/lib/MessagesList.json";
 import shAuthenticationIcon from "@/assets/icon_sh_auth.webp";
 
@@ -14,8 +13,8 @@ export const metadata: Metadata = {
     title: "Error"
 }
 
-export default function Error(props: PagePropsType) {
-    const errorCode = props.searchParams.code;
+export default function Error({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined }}) {
+    const errorCode = searchParams.code;
     let resolvedErrorCode;
 
     if (Array.isArray(errorCode)) resolvedErrorCode = errorCode[0];
