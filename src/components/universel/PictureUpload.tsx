@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useRef } from "react";
 import { FieldError, UseFormClearErrors, UseFormSetError, UseFormSetValue } from "react-hook-form";
-import { RegistrationBoxInputType } from "@/types/gettedUserDataType";
+import { RegistrationBoxInputType } from "@/types/types";
 import { BsCloudUpload } from "react-icons/bs";
 
 interface PictureUploadType extends React.HTMLProps<HTMLInputElement> {

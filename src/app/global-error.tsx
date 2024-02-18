@@ -20,7 +20,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
                         <p className="text-lg font-medium">SH authentication system</p>
                     </div>
                     <p className="text-7xl lg:text-9xl text-gray-600 dark:text-gray-400 font-extrabold text-center">{509}</p>
-                    <p className="text-center text lg:text-lg text-red-700 font-medium max-w-[600px] mx-auto">Error: Something went wrong!</p>
+                    <p className="text-center text lg:text-lg text-red-500 dark:text-red-700 font-medium max-w-[600px] mx-auto">Error: Something went wrong!</p>
                     <Link href="/" className="py-1 outline-none bg-blue-500 hover:bg-blue-600 text-white dark:text-gray-200 hover:text-gray-200 dark:hover:text-gray-300 rounded-md block max-w-[400px] text-center mx-auto">
                         <p>Home page</p>
                     </Link>

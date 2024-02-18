@@ -1,104 +1,84 @@
 "use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { signIn, useSession } from "next-auth/react";
-import { Fragment, useEffect, useState } from "react";
+import { Session } from "next-auth";
+import { signOut } from "next-auth/react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
+import newUserRegistration  from "@/lib/database/databaseActions/newUserRegistration";
 import { Listbox, RadioGroup, Transition } from "@headlessui/react";
+import InputBox from "@/app/auth/sign-up/InputBox";
 import ReactDatePicker from "react-datepicker";
-import InputBox from "./InputBox";
-import PictureUpload from "../universel/PictureUpload";
+import PictureUpload from "@/components/universel/PictureUpload";
+import { ApplicationBasicDataContext } from "@/app/auth/layout";
+import signUpFormSchema from "@/lib/FormSchema/signUpFormSchema";
+import userSignIn from "@/lib/database/databaseActions/userSignIn";
+import { ApplicationBasicDataType, RegistrationBoxInputType, StatusType } from "@/types/types";
 import { CgSpinner } from "react-icons/cg";
+import { FaArrowLeftLong, FaCheck } from "react-icons/fa6";
+import { RxCross1 } from "react-icons/rx";
+import CountryCodeList from "@/lib/CountryCodeList.json";
+import MessageList from "@/lib/MessagesList.json";
 import registrationBoxCover from "@/assets/registration_box_cover.jpg";
 import "react-datepicker/dist/react-datepicker.css";
-import { BoxPropsType, RegistrationBoxInputType, RegistrationModalDataType } from "@/types/gettedUserDataType";
-import signUpFormSchema from "./signUpFormSchema";
-import CountryCodeList from "@/lib/CountryCodeList.json";
-import { userRegistration } from "@/lib/database/userManager";
-import RegistrationModal from "./RegistrationModal";
-
-interface ResponseType {
-    code: number,
-    message: string;
-    success: boolean;
-}
 
                 
-export default function RegistrationBox({ stockAppData, callbackUrl }: BoxPropsType) {
+export default function SignUpBox({ session }: { session: Session }) {
 
-    const initialModalData = {
-        isOpen: false,
-        success: true,
-        code: 0,
-        message: ""
-    }
+    const { stockAppData } = useContext(ApplicationBasicDataContext) as ApplicationBasicDataType;
 
-    const [modalData, setModalData] = useState<RegistrationModalDataType>(initialModalData)
+    const [signupStatus, setSignupStatus] = useState<StatusType>({ status: "initial", message: "" });
     const [isLoading, setLoading] = useState<boolean>(false);
 
-    const { data: session, update } = useSession();
-
     const router = useRouter();
-
-
-    const { control, register, formState: { errors }, handleSubmit, clearErrors, setError, getValues, setValue } = useForm<RegistrationBoxInputType>({
+    
+    const { control, register, formState: { errors }, handleSubmit, clearErrors, setError, setValue } = useForm<RegistrationBoxInputType>({
         resolver: yupResolver(signUpFormSchema),
     });
 
     useEffect(() => {
         if (session?.user?.email) {
-            setValue('email', session.user.email);
+            setValue('email', session.user.email.address || session.user.email);
             const nameParts = session?.user.name.trim().split(/\s+/);
             const lastName = nameParts.pop();
             const firstName = nameParts.join(" ");
             setValue('firstName', firstName);
             setValue('lastName', lastName);
         }
-    }, [session, setValue]);
+    }, []);
 
-    const callbackUrlLink = `/auth/user-info?${callbackUrl}`;
-
-    const onSubmit: SubmitHandler<RegistrationBoxInputType> = async(data) => {
-        setLoading(true);
-        const response = await userRegistration(data);
-        setModalData({
-            isOpen: true,
-            ...response as ResponseType
-        })
-        setLoading(false);
-    }
-
-    const modalCallback = async () => {
-        if (!modalData.success) {
-          setModalData(initialModalData);
-          return;
+    const onSubmit: SubmitHandler<RegistrationBoxInputType> = async (data) => {
+        try {
+            setLoading(true);
+        
+            const registrationResponse = await newUserRegistration(data);
+            setSignupStatus(registrationResponse as StatusType);
+        
+            if (registrationResponse.status === "registred") {
+                if (session) router.push("/auth/user-info");
+                else {
+                    const loginResponse = await userSignIn({
+                        username: data.email,
+                        password: data.password,
+                    });
+        
+                    setSignupStatus(loginResponse as StatusType);
+        
+                    if (loginResponse.status === "authenticated") {
+                        router.push("/auth/user-info");
+                        return;
+                    }
+                }
+            }
+            setLoading(false);
+        } catch (error) {
+            setSignupStatus({ status: "error", message: error?.toString() || MessageList.M009.message });
+            
         }
-      
-        if (!session) {
-            const response = await signIn("credentials", {
-                username: getValues("email"),
-                password: getValues("password"),
-                redirect: false,
-                callbackUrl: callbackUrlLink
-            });
-      
-          if (!response?.ok) {
-            const errorObject = JSON.parse(response?.error || '{"status":{"code":505,"message":"Unknown Error! Please try again or contact to our support."},"user":null}');
-            setModalData({
-              isOpen: true,
-              success: false,
-              code: errorObject.status.code || 0,
-              message: errorObject.status.message
-            });
-            return;
-          }
-        }
-      
-        await update();
-        router.push(callbackUrlLink);
+        
     };
-      
+    
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="w-full lg:w-[800px] lg:flex scrollbar-hide md:shadow-xl md:rounded-xl bg-white dark:bg-gray-900 text-black dark:text-gray-200 pb-10 lg:pb-0">
@@ -124,12 +104,19 @@ export default function RegistrationBox({ stockAppData, callbackUrl }: BoxPropsT
                         )}
                     />
                 </div>
-                <p className="absolute bottom-0 text-3xl px-4 pt-10 pb-6 bg-gradient-to-t from-black via-black">We protect your privacy</p>
+                <p className="absolute bottom-0 text-3xl px-4 pt-10 pb-6 text-white dark:text-gray-200 bg-gradient-to-t from-black via-black">We protect your privacy</p>
             </section>
             <section className="p-5 lg:p-6 w-full">
-                <div className="flex justify-center space-x-2 items-center">
-                    {stockAppData?.icon && <Image src={stockAppData.icon} alt={`${stockAppData.name} logo`} width={30} height={30} />}
-                    <p className="text-lg font-medium">{stockAppData?.name}</p>
+                <div className="flex items-center">
+                    {session && (
+                        <button type="button" onClick={() => signOut({ callbackUrl: "/auth/sign-in" })} className="text-black dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400 transition-all w-5">
+                            <FaArrowLeftLong size={20} />
+                        </button>
+                    )}
+                    <div className="flex items-center justify-center space-x-2 mx-auto">
+                        {stockAppData.appIcon && <Image src={stockAppData.appIcon} alt={`${stockAppData.appName} logo`} width={30} height={30} />}
+                        <p className="text-lg font-medium">{stockAppData.appName}</p>
+                    </div>
                 </div>
                 <p className="text-sm text-center mt-2 text-violet-500 font-medium mb-5">Before you go please fill up this form</p>
                 <div className="space-y-3">
@@ -281,7 +268,6 @@ export default function RegistrationBox({ stockAppData, callbackUrl }: BoxPropsT
                                 </div>
                             )}
                         />
-
                     </div>
                     <div>
                         <label className="text-sm font-bold text-gray-500">Gender</label>
@@ -320,13 +306,24 @@ export default function RegistrationBox({ stockAppData, callbackUrl }: BoxPropsT
                     placeholder="United States"
                 />
 
+                {signupStatus.message && (
+                    <div className={`py-1.5 rounded bg-opacity-20 mt-5 ${(signupStatus.status !=="error") ? "bg-green-500" : "bg-red-500"}`}>
+                        <p className={`px-3 flex items-center space-x-2 text-sm font-medium ${(signupStatus.status !=="error") ? "text-green-500" : "text-red-500"}`}>
+                            {(signupStatus.status !=="error") ? (
+                                <FaCheck size={16} />
+                            ) : (
+                                <RxCross1 size={16} />
+                            )}
+                            <span>{signupStatus.message}</span>
+                        </p>
+                    </div>
+                )}
 
                 <button type="submit" disabled={isLoading} className="flex items-center space-x-2  justify-center mt-5 bg-violet-500 hover:bg-violet-600 shadow-xl outline-none shadow-violet-300 dark:shadow-violet-900 text-white disabled:bg-gray-400 hover:text-gray-200 py-1.5 w-full rounded-md transition-all">
                     {isLoading && <CgSpinner size={20} className="animate-spin" />}
                     <p>{isLoading ? "Please wait..." : "Confirm"}</p>
                 </button>
             </section>
-            <RegistrationModal modalData={modalData} modalCallback={modalCallback} />
         </form>
     );
 }

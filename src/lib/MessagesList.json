@@ -21,7 +21,23 @@
     },
     "M006": {
         "code": 413,
-        "message": "Selected image size exceeds 5MB limit."
+        "message": "Selected image size exceeds 3MB limit."
+    },
+    "M007": {
+        "code": 403,
+        "message": "Unable to fetch cookie or invalid cookie. Access to the requested resource is denied."
+    },
+    "M008": {
+        "code": 403,
+        "message": "Unable to decode cookie. This may indicate that the cookie has been modified or server configuration have changed."
+    },
+    "M009": {
+        "code": 509,
+        "message": "Something went wrong. Please contact to our help center to solve the issue."
+    },
+    "M010": {
+        "code": 401,
+        "message": "The two step verification code you have provided is invalid or expired."
     },
     "M017": {
         "code": 401,

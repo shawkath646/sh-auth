@@ -12,7 +12,7 @@ export default function Home() {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    const link = `/auth/sign-in?app_id=${appId}&auth_token=${authToken}&callback_url=${callbackUrl}`;
+    const link = `/validate?app_id=${appId}&auth_token=${authToken}&callback_url=${callbackUrl}`;
     router.push(link);
   }
 

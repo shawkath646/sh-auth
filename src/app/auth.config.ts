@@ -4,9 +4,11 @@ import Google from "next-auth/providers/google";
 import Facebook from "next-auth/providers/facebook";
 import GitHub from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
-import { getUserData, saveLoginHistory, validateUser }from "@/lib/database/userManager";
-import GettedUserData from "@/types/gettedUserDataType";
+import getUserData from "@/lib/database/databaseActions/getUserData";
+import saveLoginHistory from "@/lib/database/databaseActions/saveLoginHistory";
+import validateUser from "@/lib/database/databaseActions/validateUser";
 import { db } from "@/lib/database/firebase";
+import { UserDataType } from "@/types/types";
 
 export const authConfig = {
     providers: [
@@ -27,8 +29,7 @@ export const authConfig = {
             username: string;
             password: string;
           };
-          const { user } = await validateUser({ username, password });
-          return user;
+          return await validateUser({ username, password });
         }
       }),
     ],
@@ -37,40 +38,36 @@ export const authConfig = {
     pages: {
       signIn: '/auth/sign-in',
       newUser: '/auth/sign-up',
-      signOut: '/auth/sign-out',
+      signOut: '/auth/profile?tab=logout',
       error: '/error'
     },
     callbacks: {
-        async session({ session, token }) {
-          if (session.user) {
-            const { email, personalData, contactInfo, loginInfo, permissions, username, newUser } = token;
-            session.user.id = token.sub || session.user.id;
-            session.user.personalData = personalData;
-            session.user.contactInfo = contactInfo;
-            session.user.loginInfo = loginInfo;
-            session.user.permissions = permissions;
-            session.user.username = username;
-            session.user.newUser = newUser;
-            await saveLoginHistory(session.user.id);
-          }
-          return session;
-        },
-        async jwt({ token }) {
-          if (token.email) {
-            const gettedUserData = await getUserData(token.email);
-            if (gettedUserData) {
-              const { personalData, contactInfo, loginInfo, permissions, username } = gettedUserData as GettedUserData;
-              Object.assign(token, { personalData, contactInfo, loginInfo, permissions, username, newUser: false });
-            } else {
-              token.newUser = true;
-            }
-          } else {
-            token.newUser = true;
-          }
-          return token;
-        }        
+      async session({ session, token }) {
+        if (session.user) {
+          const { email, phoneNumber, username, dateOfBirth, gender, isEnterpriseUser, permissions, country, oldUser, sub } = token;
+          Object.assign(session.user, { 
+            id: sub || session.user.id,
+            email, gender, phoneNumber, username, dateOfBirth, isEnterpriseUser, permissions, country, oldUser
+          });
+          await saveLoginHistory(session.user.id);
+        }
+        return session;
       },
-      
+      async jwt({ token }) {
+        if (token.email) {
+          const userData = await getUserData(token.email) as UserDataType;
+          if (userData) {
+            const { permissions, username, isEnterpriseUser, contactInfo, personalData } = userData;
+            const primaryEmail = contactInfo.email.find(e => e.type === "primary");
+            const phoneNumber = contactInfo.phoneNumber[0];
+            const { dateOfBirth, gender } = personalData;
+            const country = personalData.address.permanent.country;
+            Object.assign(token, { email: primaryEmail, phoneNumber, username, dateOfBirth, gender, isEnterpriseUser, permissions, country, oldUser: true });
+          }
+        }
+        return token;
+      }
+    },
     session: {
       strategy: "jwt",
     },

@@ -1,11 +1,5 @@
-import React, { InputHTMLAttributes, forwardRef } from "react";
-import { FieldError } from "react-hook-form";
-
-interface InputBoxType extends InputHTMLAttributes<HTMLInputElement> {
-    label: string;
-    error?: FieldError;
-    className?: string;
-}
+import { forwardRef } from "react";
+import { InputBoxType } from "@/types/types";
 
 const InputBox = forwardRef<HTMLInputElement, InputBoxType>(({ label, error, className, ...rest }, ref) => {
     return (

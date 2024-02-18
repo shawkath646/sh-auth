@@ -1,37 +1,22 @@
 "use client";
+import Link from "next/link";
 import Image from "next/image";
-import { signOut, useSession } from "next-auth/react";
-import { BoxPropsType, DateOfBirth } from "@/types/gettedUserDataType";
+import { useContext } from "react";
+import { ApplicationBasicDataContext } from "@/app/auth/layout";
+import { ApplicationBasicDataType, DateOfBirthType } from "@/types/types";
+import { FaUser } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
-import { IoExitOutline } from "react-icons/io5";
 import { ImSpinner8 } from "react-icons/im";
+import blankUserProfile from "@/assets/blank_user_profile.png";
+import { Session } from "next-auth";
 
 
-export interface LoginHistory {
-    userAgent: string;
-    clientIp: string;
-    clientLocation: string;
-    timestamp?: DateOfBirth | Date;
-    refreshToken?: {
-      token: string;
-      expireOn: Date;
-    };
-}
 
-interface BoxPropsExtendedType extends BoxPropsType {
-    userAgent: string;
-}
+export default function UserInfoBox({ session, userAgent }: { session: Session; userAgent: string }) {
 
-export default function UserInfoBox({ stockAppData, requestedAppData, callbackUrl, userAgent }: BoxPropsExtendedType) {
+    const { stockAppData, requestedAppData } = useContext(ApplicationBasicDataContext) as ApplicationBasicDataType;
 
-    const callbackUrlLink = `/auth/sign-in?${callbackUrl}`;
-
-
-    const { data: session, status } = useSession({
-        required: true,
-    });
-
-    const timeStampToDate = (input: DateOfBirth | Date): Date => {
+    const timeStampToDate = (input: DateOfBirthType | Date): Date => {
         if (input instanceof Date) {
           return input;
         }
@@ -45,13 +30,12 @@ export default function UserInfoBox({ stockAppData, requestedAppData, callbackUr
         return date.toLocaleDateString('en-US', options);
     };
            
-
     return (
-        <section className="w-[400px] bg-white dark:bg-gray-900 bg-opacity-95 p-5 lg:p-7 rounded-xl text-black dark:text-gray-200 shadow-lg">
+        <section className="w-[400px] bg-white dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 p-5 lg:p-7 rounded-xl text-black dark:text-gray-200 shadow-lg">
             <div className="flex justify-center space-x-2 items-center">
-                    {stockAppData?.icon && <Image src={stockAppData.icon} alt={`${stockAppData.name} logo`} width={30} height={30} />}
-                    <p className="text-lg font-medium">{stockAppData?.name}</p>
-                </div>
+                {stockAppData.appIcon && <Image src={stockAppData.appIcon} alt={`${stockAppData.appName} logo`} width={30} height={30} />}
+                <p className="text-lg font-medium">{stockAppData.appName}</p>
+            </div>
             {status === "loading" ? (
                 <div className="w-full flex items-center justify-center h-[300px]">
                     <div>
@@ -61,11 +45,14 @@ export default function UserInfoBox({ stockAppData, requestedAppData, callbackUr
                 </div>
             ) : (
                 <>
-                    {(session?.user?.personalData?.image || session?.user.image) && <Image src={session?.user?.personalData?.image || session?.user.image} alt="User profile" width={90} height={90} className="-[90px] h-[90px] rounded-full mx-auto mt-4" />}
-                    <p className="text-gray-700 text-center dark:text-gray-300">@{session?.user.username}</p>
+                    <div className="relative mx-auto w-[100px] h-[100px]">
+                        <Image src={session?.user.image || blankUserProfile.src} alt="User profile" width={90} height={90} className={`w-[100px] h-[100px] rounded-full mt-4 border-4 p-1 ${session?.user.isEnterpriseUser ? "border-yellow-500" : "border-blue-500"}`} />
+                        {session?.user.isEnterpriseUser && <p className="absolute text-sm bg-yellow-200 text-yellow-600 rounded-2xl px-1.5 py-0.5 font-medium -right-7 bottom-0">Enterprise</p>}
+                    </div>
+                    <p className="text-gray-700 text-center dark:text-gray-300 mt-2">@{session?.user.username}</p>
                     <table className="w-full text-sm text-left rtl:text-right text-gray-500 mt-5">
                         <tbody>
-                            <tr className="dark:bg-gray-800 border-b dark:border-gray-900">
+                            <tr className="dark:bg-gray-800 bg-white border-b dark:border-gray-900">
                                 <th scope="row" className="px-3 py-4 font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">
                                 ID
                                 </th>
@@ -73,15 +60,15 @@ export default function UserInfoBox({ stockAppData, requestedAppData, callbackUr
                                 {session?.user.id}
                                 </td>
                             </tr>
-                            <tr className="dark:bg-gray-800 border-b dark:border-gray-900">
+                            <tr className="dark:bg-gray-800 bg-white border-b dark:border-gray-900">
                                 <th scope="row" className="px-3 py-4 font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">
                                     Name
                                 </th>
                                 <td className="px-3 py-4 dark:text-gray-300">
-                                    {session?.user.personalData?.firstName} {session?.user.personalData?.lastName}
+                                    {session?.user.name}
                                 </td>
                             </tr>
-                            <tr className="dark:bg-gray-800 border-b dark:border-gray-900">
+                            <tr className="dark:bg-gray-800 bg-white border-b dark:border-gray-900">
                                 <th scope="row" className="px-3 py-4 font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">
                                     Date of Birth
                                 </th>
@@ -89,7 +76,7 @@ export default function UserInfoBox({ stockAppData, requestedAppData, callbackUr
                                     <FormatDate />
                                 </td>
                             </tr>
-                            <tr className="dark:bg-gray-800 border-b dark:border-gray-900">
+                            <tr className="dark:bg-gray-800 bg-white border-b dark:border-gray-900">
                                 <th scope="row" className="px-3 py-4 font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">
                                     Agent
                                 </th>
@@ -97,23 +84,22 @@ export default function UserInfoBox({ stockAppData, requestedAppData, callbackUr
                                     {userAgent}
                                 </td>
                             </tr>
-                            <tr className="dark:bg-gray-800 border-b dark:border-gray-900">
+                            <tr className="dark:bg-gray-800 bg-white border-b dark:border-gray-900">
                                 <th scope="row" className="px-3 py-4 font-medium text-gray-900 dark:text-gray-300 whitespace-nowrap">
                                     Requested by
                                 </th>
                                 <td className="px-3 py-4 dark:text-gray-300 flex items-center space-x-2">
-                                    {requestedAppData?.icon && <Image src={requestedAppData?.icon} width={20} height={20} alt={`${requestedAppData?.name} logo`} />}
-                                    <p>{requestedAppData?.name}</p>
+                                    {requestedAppData.appIcon && <Image src={requestedAppData.appIcon} width={20} height={20} alt={`${requestedAppData.appName} logo`} />}
+                                    <p>{requestedAppData.appName}</p>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-
                     <div className="flex space-x-2 items-center mt-8">
-                        <button type="button" onClick={() => signOut({ callbackUrl: callbackUrlLink })} className="flex items-center justify-center space-x-2 w-full outline-none py-1.5 bg-red-500 bg-opacity-40 border border-red-500 hover:bg-opacity-100 hover:text-white dark:text-gray-200 transition-all mx-auto rounded-md">
-                            <p>Sign Out</p>
-                            <IoExitOutline size={20} />
-                        </button>
+                        <Link href="/auth/profile" className="flex items-center justify-center space-x-2 w-full outline-none py-1.5 bg-green-500 bg-opacity-40 border border-green-500 hover:bg-opacity-100 hover:text-white dark:text-gray-200 transition-all mx-auto rounded-md">
+                            <p>Profile</p>
+                            <FaUser size={20} />
+                        </Link>
                         <button type="button" className="flex items-center justify-center space-x-2 w-full outline-none py-1.5 bg-blue-500 bg-opacity-40 border border-blue-500 hover:bg-opacity-100 hover:text-white dark:text-gray-200 transition-all mx-auto rounded-md">
                             <p>Continue</p>
                             <IoIosArrowForward size={20} />

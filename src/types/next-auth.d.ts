@@ -1,5 +1,5 @@
 import { DefaultSession } from "next-auth";
-import { CustomSessionType } from "@/types/gettedUserDataType";
+import { CustomSessionType } from "@/types/types";
 
 // nextauth.d.ts
 declare module "next-auth" {

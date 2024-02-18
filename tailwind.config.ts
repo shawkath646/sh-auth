@@ -16,5 +16,6 @@ const config: Config = {
     },
   },
   plugins: [require('tailwindcss-aria-attributes'), require('tailwind-scrollbar-hide')],
+  ...(process.env.NODE_ENV === 'production' ? { cssnano: {} } : {})
 };
 export default config;

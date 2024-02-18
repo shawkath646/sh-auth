@@ -1,24 +1,19 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import AppProvider from "@/components/layout/AppProvider";
+import GlobalLayoutWrapper from "@/components/layout/GlobalLayoutWrapper";
 
 const poppins = Poppins({ weight: ['300', '400', '500', '600'], subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    absolute: "",
-    default: "SH authentication system",
-    template: "%s | SH authentication system"
+    default: "SH Authentication System",
+    template: "%s | SH Authentication System"
   },
   description: "Next generation authentication app by SH CloudBurst Labs",
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children, }: Readonly<{ children: React.ReactNode; }>) {
   return (
     <html lang="en">
       <head>
@@ -30,7 +25,7 @@ export default function RootLayout({
         />
       </head>
       <body className={poppins.className}>
-        <AppProvider>{children}</AppProvider>
+        <GlobalLayoutWrapper>{children}</GlobalLayoutWrapper>
       </body>
     </html>
   );

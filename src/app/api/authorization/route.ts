@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import getAppData from '@/lib/database/getAppData';
-import tokenManager from '@/lib/database/tokenManager';
+import getAppData from '@/lib/database/databaseActions/getAppData';
+import { getAuthToken, getRefreshToken, verifyToken } from '@/lib/database/tokenManager';
 import MessagesList from '@/lib/MessagesList.json';
 
 export async function POST(req: NextRequest) {
@@ -9,11 +9,9 @@ export async function POST(req: NextRequest) {
 
     const payload = recievedData.payload;
 
-    const tokenFunctions = await tokenManager(payload);
-
     let authToken, refreshToken;
 
-    if (payload?.app_id && payload?.refresh_token && tokenFunctions.verifyToken(payload.refresh_token)) authToken = await tokenFunctions.getAuthToken(payload?.refresh_token);
+    if (payload?.app_id && payload?.refresh_token && verifyToken(payload.refresh_token)) authToken = getAuthToken(payload.app_id, payload?.refresh_token);
 
     else if (payload?.app_id && payload?.app_secret) {
         
@@ -24,12 +22,12 @@ export async function POST(req: NextRequest) {
         const response = await fetch(`http://ip-api.com/json/${clientIp}`);
         const clientLocation = await response.json();
 
-        const appData = await getAppData(payload?.app_id);
+        const requestedAppDocData = await getAppData(payload?.app_id);
 
-        if (payload.app_secret !== appData.data.app_secret) return NextResponse.json({ success: false, message: MessagesList.M017.message }, { status: MessagesList.M017.code });
+        if (payload.app_secret !== requestedAppDocData.data.appSecret) return NextResponse.json({ success: false, message: MessagesList.M017.message }, { status: MessagesList.M017.code });
 
-        refreshToken = await tokenFunctions.getRefreshToken({ userAgent, clientIp, clientLocation });
-        authToken = await tokenFunctions.getAuthToken(refreshToken.token);
+        refreshToken = await getRefreshToken(payload, { userAgent, clientIp, clientLocation });
+        authToken = getAuthToken(payload.app_id, refreshToken.token);
         
     } else return NextResponse.json({ success: false, message: MessagesList.M019.message }, { status: MessagesList.M019.code });
 
