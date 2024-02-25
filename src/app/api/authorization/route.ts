@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import getAppData from '@/lib/database/databaseActions/getAppData';
-import { getAuthToken, getRefreshToken, verifyToken } from '@/lib/database/tokenManager';
+import getAppData from '@/actions/database/getAppData';
+import { getAuthToken, getRefreshToken, verifyToken } from '@/actions/otherActions/tokenManager';
 import MessagesList from '@/lib/MessagesList.json';
 
 export async function POST(req: NextRequest) {
@@ -40,3 +40,9 @@ export async function POST(req: NextRequest) {
         },
     }, { status: MessagesList.M001.code });
 };
+
+export async function GET(req: NextRequest) {
+    console.log(req.body);
+
+    NextResponse.json({ success: "cscss" });
+}

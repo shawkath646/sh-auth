@@ -1,4 +1,4 @@
-import { storage } from "@/lib/database/firebase";
+import { storage } from "@/config/firebase.config";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import MessageList from "@/lib/MessagesList.json";
+import MessageList from "@/JsonData/MessagesList.json";
 import shAuthenticationIcon from "@/assets/icon_sh_auth.webp";
 
 

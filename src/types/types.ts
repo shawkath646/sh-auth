@@ -1,9 +1,9 @@
 import { InputHTMLAttributes } from "react";
-import { JWTPayload } from "jose";
+import { JwtPayload } from "jsonwebtoken";
 import { FieldError } from "react-hook-form";
-import { FieldValue } from "firebase-admin/firestore";
+import { Timestamp } from "firebase-admin/firestore";
 
-export interface DateOfBirthType {
+export interface TimestampFieldValue {
   _seconds: number;
   _nanoseconds: number;
 }
@@ -31,7 +31,7 @@ export interface AddressType {
 export interface PersonalDataType {
   firstName: string;
   lastName: string;
-  dateOfBirth: DateOfBirthType | Date | FieldValue;
+  dateOfBirth: Timestamp | Date | TimestampFieldValue;
   gender: string;
   image: string;
   address: {
@@ -54,7 +54,7 @@ export interface PersonalDataType {
     userAgent: string;
     clientIp: string;
     clientLocation: any;
-    timestamp?: DateOfBirthType | Date | FieldValue;
+    timestamp?: Timestamp | Date | TimestampFieldValue;
     refreshToken?: {
       token: string;
       expireOn: Date;
@@ -96,8 +96,10 @@ export interface PersonalDataType {
       image?: string | null
       id?: string;
       username?: string;
+      phoneNumber: string;
+      gender: "male" | "female" | "others";
+      dateOfBirth: Timestamp | Date | TimestampFieldValue;
       permissions?: PermissionType[];
-      oldUser? :boolean;
       country: string;
       isEnterpriseUser: string
     }
@@ -126,27 +128,19 @@ export interface PersonalDataType {
     image?: string;
   }
 
-  export interface BoxPropsType {
-    stockAppData?: {
-      name: string;
-      icon: string;
-    },
-    requestedAppData?: {
-      name: string;
-      icon: string;
-    }
-  }
 
   export interface StatusType {
-    status: "error" | "authenticated" | "two-step" | "initial" | "registred";
+    status: "error" | "authenticated" | "two-step" | "initial" | "registred" | "success";
     message: string;
-    twoStep?: TwoStepType
   }
 
-  export interface CookieJsonType extends JWTPayload {
-    requestedAppId: string;
-    requestedAppAuthToken: string;
-    requestedAppCallbackUrl: string;
+  export interface CookieJsonType extends JwtPayload {
+    requestedClientId: string;
+    requestedRedirectUri: string;
+    requestedCodeChallenge: string;
+    requestedCodeChallengeMethod: string;
+    requestedScope: string;
+    requestedResponseType: string;
   }
   
   export interface AppDataType {
@@ -155,9 +149,9 @@ export interface PersonalDataType {
     appName: string;
     appSecret: string;
     author: string;
-    createdOn: Date | FieldValue;
+    createdOn: Timestamp | Date | TimestampFieldValue;
     id: string;
-    loginHidtory: LoginHistoryType;
+    loginHistory: LoginHistoryType;
     version: string;
     website: string;
     privacyPolicy: string;
@@ -200,9 +194,19 @@ export interface TwoStepType {
   expireOn: Date;
 }
 
-export interface ApplicationBasicDataType {
-  stockAppData: AppDataType;
-  requestedAppData: AppDataType;
-  brandData: BrandDataType
+export interface ResolvedAppDataType {
+  appIcon: string;
+  appName: string;
+  author: string;
+  version: string;
+  createdOn: Timestamp | Date | TimestampFieldValue;
+  website: string;
+  privacyPolicy: string;
+  contact: string;
+};
+
+export interface AppBasicDataType {
+  stockAppData: ResolvedAppDataType;
+  brandData: BrandDataType;
 }
 
