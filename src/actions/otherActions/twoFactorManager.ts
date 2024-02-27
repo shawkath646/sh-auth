@@ -37,7 +37,7 @@ async function request(userData: ExtendedDocumentData): Promise<StatusType | Ext
     }
 
     const codeValidity: number = Number(process.env.TWO_FACTOR_VALIDITY) || 30000;
-    expireOn = new Date(currentDate.getTime() + codeValidity);
+    expireOn = new Date(currentDate.getTime() + codeValidity * 1000);
 
     return {
         status: "two-step",

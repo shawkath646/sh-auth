@@ -18,17 +18,17 @@ interface OIDCReturnType {
     grant_types_supported: string[];
 }
 
-const baseURL = "http://localhost:3000";
+const baseURL = process.env.APP_BASE_URL;
 
 
 export async function GET(req: NextRequest) {
 
     const oidcConfig: OIDCReturnType = {
-        issuer: `${baseURL}/api`,
-        authorization_endpoint: `${baseURL}/validate`,
-        token_endpoint: `${baseURL}/oauth/token`,
-        userinfo_endpoint: `${baseURL}/oauth/user_info`,
-        jwks_uri: `${baseURL}/oauth/public_keys`,
+        issuer: `${baseURL}/api/oauth`,
+        authorization_endpoint: `${baseURL}/api/oauth/request`,
+        token_endpoint: `${baseURL}/api/oauth/token`,
+        userinfo_endpoint: `${baseURL}/api/oauth/user_info`,
+        jwks_uri: `${baseURL}/api/oauth/public_keys`,
         response_types_supported: [
             "code",
             "token",

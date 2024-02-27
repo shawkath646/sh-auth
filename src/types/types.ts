@@ -1,7 +1,7 @@
 import { InputHTMLAttributes } from "react";
 import { JwtPayload } from "jsonwebtoken";
 import { FieldError } from "react-hook-form";
-import { Timestamp } from "firebase-admin/firestore";
+import { Timestamp } from "@/config/firebase.config";
 
 export interface TimestampFieldValue {
   _seconds: number;
@@ -91,28 +91,23 @@ export interface PersonalDataType {
 
   export interface CustomSessionType {
     user?: {
-      name?: string | null
-      email?: string | null
-      image?: string | null
+      name?: string | null;
+      email?: string | null;
+      emailVerified: boolean;
+      image?: string | null;
       id?: string;
       username?: string;
+      firstName: string;
+      lastName: string;
       phoneNumber: string;
       gender: "male" | "female" | "others";
       dateOfBirth: Timestamp | Date | TimestampFieldValue;
       permissions?: PermissionType[];
       country: string;
-      isEnterpriseUser: string
+      isEnterpriseUser: boolean
     }
     expires: string
   }
-  
-
-  export interface PayloadType {
-    app_id: string;
-    app_secret?: string;
-    refresh_token?: string;
-  }
- 
 
   export interface RegistrationBoxInputType {
     firstName: string;
@@ -128,7 +123,6 @@ export interface PersonalDataType {
     image?: string;
   }
 
-
   export interface StatusType {
     status: "error" | "authenticated" | "two-step" | "initial" | "registred" | "success";
     message: string;
@@ -141,7 +135,29 @@ export interface PersonalDataType {
     requestedCodeChallengeMethod: string;
     requestedScope: string;
     requestedResponseType: string;
+    requestedState: string;
+    requestedNonce: string;
   }
+
+  export interface ProfileType {
+    name?: string | null;
+    email?: string | null;
+    email_verified: boolean;
+    picture?: string | null;
+    id?: string;
+    sub?: string;
+    given_name: string;
+    family_name: string;
+    aud: string;
+    iss: string;
+    nonce: string;
+    gender?: string;
+    dateOfBirth?: Date | TimestampFieldValue | Timestamp;
+    country?: string;
+    phoneNumber?: string;
+    permissions?: PermissionType[];
+    isEnterpriseUser?: boolean;
+  };
   
   export interface AppDataType {
     appIcon: string;
@@ -151,11 +167,16 @@ export interface PersonalDataType {
     author: string;
     createdOn: Timestamp | Date | TimestampFieldValue;
     id: string;
-    loginHistory: LoginHistoryType;
     version: string;
     website: string;
     privacyPolicy: string;
-    contact: string
+    contact: string;
+    callbackUrl: string[];
+    isSuspended: boolean;
+    scope: "openid"
+    | "email"
+    | "profile";
+    privateKey: string;
   }
   
   export interface BrandDataType {
@@ -210,3 +231,24 @@ export interface AppBasicDataType {
   brandData: BrandDataType;
 }
 
+export interface PrepareOAuthDataType {
+  authCode: {
+    code: string;
+    expireOn: Timestamp | Date | TimestampFieldValue;
+  },
+  accessToken: {
+    token: string;
+    expireOn: Timestamp | Date | TimestampFieldValue;
+  },
+  refreshToken: {
+    token: string;
+    expireOn: Timestamp | Date | TimestampFieldValue;
+  },
+  idToken: {
+    token: string;
+    expireOn: Timestamp | Date | TimestampFieldValue;
+  };
+  userId: string;
+  appId: string;
+  requestData: CookieJsonType
+}

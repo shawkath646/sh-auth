@@ -18,6 +18,13 @@ interface ExtendedStatusType extends StatusType {
 
 export default async function userSignIn(provider: BuiltInProviderType, credential?: UserCredintialType, twoFactorCode?: number): Promise<StatusType | ExtendedStatusType> {
 
+    let redirectTo;
+
+    const cookieList = cookies();
+    const requestedAppCookie = cookieList.get("recieved_response")?.value;
+    if (requestedAppCookie) redirectTo = "/auth/protected/user-info";
+    else redirectTo= "/auth/protected/profile";
+
     if (provider === "credentials" && credential) {
 
         const userDocRef = await getUser(credential.username);
@@ -44,7 +51,7 @@ export default async function userSignIn(provider: BuiltInProviderType, credenti
 
 
         try {
-            await signIn(provider, { ...credential });
+            await signIn(provider, { ...credential, redirect: false });
         } catch (error) {
             if (error instanceof AuthError) {
                 switch (error.type) {
@@ -62,13 +69,10 @@ export default async function userSignIn(provider: BuiltInProviderType, credenti
             }
         }
 
-        const cookieList = cookies();
-        const requestedAppCookie = cookieList.get("recieved_response")?.value;
-        if (requestedAppCookie) return redirect("/auth/protected/user-info");
-        else return redirect("/auth/protected/profile");
+        redirect(redirectTo);
 
     } else {
-        await signIn(provider);
+        await signIn(provider, { redirectTo });
     }
 
     return {

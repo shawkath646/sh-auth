@@ -1,4 +1,5 @@
 import admin from "firebase-admin";
+import { Timestamp } from "firebase-admin/firestore";
 
 let firebaseConfig = {
     type: process.env.FIREBASE_TYPE,
@@ -23,6 +24,6 @@ const app = admin.apps.length ? admin.app() : admin.initializeApp({
 
 const db = admin.firestore(app);
 const storage = admin.storage(app);
-const fieldValue = admin.firestore.FieldValue;
+const fieldValue = admin.firestore.FieldValue
 
-export { db, storage, fieldValue };
+export { db, storage, fieldValue, Timestamp };

@@ -1,11 +1,11 @@
 "use server";
 import { ResolvedAppDataType } from "@/types/types";
 import getAppData from "@/actions/database/getAppData";
-import getOAuthData from "@/actions/oAuth/getOAuthData";
+import getOAuthInformationCookie from "@/actions/oAuth/getOAuthInformationCookie";
 import timeStampToDate from "@/utils/timeStampToDate";
 
 export default async function getRequestedAppData(): Promise<ResolvedAppDataType> {
-    const oAuthAppData = await getOAuthData();
+    const oAuthAppData = await getOAuthInformationCookie();
     const requestedAppDoc = await getAppData(oAuthAppData.requestedClientId);
     const requestedAppData = requestedAppDoc.data;
 

@@ -1,12 +1,11 @@
-import { ApplicationBasicDataType } from "@/types/types";
-import getApplicationBasicData from "./getApplicationBasicData";
+import getAppBasicData from "../getData/getAppBasicData";
 import sendMail from "../../config/nodemailer.config";
 
 let verificationCode = 0;
 
 export async function sendVerificationMail(destination: string, fullName: string) {
 
-    const { stockAppData, brandData } = JSON.parse(await getApplicationBasicData()) as ApplicationBasicDataType;
+    const { stockAppData, brandData } = await getAppBasicData();
 
     verificationCode = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
 

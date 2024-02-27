@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { createContext, useEffect, useState, Suspense } from "react";
+import { createContext, useEffect, useState } from "react";
 import getAppBasicData from "@/actions/getData/getAppBasicData";
 import LoadingSpinner from "@/components/layout/LoadingSpinner";
 import { AppBasicDataType } from "@/types/types";
@@ -33,12 +33,10 @@ export default function Layout({ children, }: Readonly<{ children: React.ReactNo
                     </div>
 
                     <footer className="absolute bottom-2 w-full z-30">
-                        <p className="text-center text-white dark:text-gray-200 ">{appBasicData?.brandData.copyrightText}</p>
+                        <p className="text-center text-white dark:text-gray-200">{appBasicData?.brandData.copyrightText}</p>
                     </footer>
                 </main>
-            ) : (
-                <Suspense fallback={<LoadingSpinner />}>{children}</Suspense>
-            )}
+            ) : children }
         </AppBasicDataContext.Provider>
     );
 }

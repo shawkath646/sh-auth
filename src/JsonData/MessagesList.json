@@ -43,6 +43,14 @@
         "code": 401,
         "message": "Unauthorized Redirect URI: The redirect URI provided is not registered with the server."
     },
+    "M012": {
+        "code": 400,
+        "message": "The requested scope provided by the client does not match the scopes registered by the server."
+    },
+    "M013": {
+        "code": 403,
+        "message": "This OAuth 2.0 application has been suspended due to unusual activities. Please contact the help center for assistance."
+    },
     "M017": {
         "code": 401,
         "message": "The provided credentials do not match."

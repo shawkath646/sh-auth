@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { CgSpinner } from "react-icons/cg";
 
 interface CountdownPropsType {
     handleResend: () => Promise<void>;
@@ -8,6 +9,7 @@ interface CountdownPropsType {
 export default function Countdown({ handleResend, time }: CountdownPropsType) {
     const [remainingTime, setRemainingTime] = useState<number>(time.getTime() - Date.now());
     const [completed, setCompleted] = useState<boolean>(false);
+    const [isLoading, setLoading] = useState(false);
 
     useEffect(() => {
         setRemainingTime(time.getTime() - Date.now());
@@ -35,14 +37,19 @@ export default function Countdown({ handleResend, time }: CountdownPropsType) {
     const seconds = totalSeconds % 60;
 
     const handleResendClick = async () => {
+        setLoading(true);
         await handleResend();
         setRemainingTime(time.getTime() - Date.now());
+        setLoading(false);
         setCompleted(false);
     };
 
     if (completed) {
         return (
-            <button type="button" onClick={handleResendClick} className="text-sm py-1.5 px-3 outline-none bg-indigo-800 hover:bg-indigo-900 hover:text-gray-400 transition-all text-white dark:text-gray-200 rounded-lg font-medium">Resend</button>
+            <button type="button" disabled={isLoading} onClick={handleResendClick} className="text-sm py-1.5 px-3 outline-none bg-indigo-800 hover:bg-indigo-900 hover:text-gray-400 transition-all text-white dark:text-gray-200 disabled:bg-gray-500 rounded-lg font-medium flex items-center space-x-1">
+                {isLoading && <CgSpinner size={20} className="animate-spin" />}
+                <p>{isLoading ? "Sending..." : "Resend"}</p>
+            </button>
         );
     }
 

@@ -1,11 +1,11 @@
 "use server";
 import * as bcrypt from "bcrypt-ts";
-import getUserByEmail from './getUser';
+import getUser from './getUser';
 import { UserCredintialType, EmailType } from "@/types/types";
 
 export default async function validateUser(userCredintial: UserCredintialType) {
     
-    const userDoc = await getUserByEmail(userCredintial.username);
+    const userDoc = await getUser(userCredintial.username);
 
     if (!userDoc) return null;
 
