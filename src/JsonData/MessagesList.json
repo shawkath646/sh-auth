@@ -5,7 +5,7 @@
     },
     "M002": {
         "code": 401,
-        "message": "Invalid or expired auth token detected. Please use authorized application to login to SH CloudBurst Account."
+        "message": "Authentication failed due to an invalid app secret."
     },
     "M003": {
         "code": 409,

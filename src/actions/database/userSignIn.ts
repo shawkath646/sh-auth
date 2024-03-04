@@ -11,7 +11,6 @@ import MessageList from "@/JsonData/MessagesList.json";
 import { BuiltInProviderType } from "@auth/core/providers";
 
 
-interface ExtendedDocumentData extends DocumentData, UserDataType { };
 interface ExtendedStatusType extends StatusType {
     twoStep: TwoStepType
 }
@@ -22,19 +21,18 @@ export default async function userSignIn(provider: BuiltInProviderType, credenti
 
     const cookieList = cookies();
     const requestedAppCookie = cookieList.get("recieved_response")?.value;
-    if (requestedAppCookie) redirectTo = "/auth/protected/user-info";
-    else redirectTo= "/auth/protected/profile";
+    if (requestedAppCookie) redirectTo = "/auth/user-info";
+    else redirectTo= "/auth/profile";
 
     if (provider === "credentials" && credential) {
 
-        const userDocRef = await getUser(credential.username);
 
-        if (!userDocRef?.exists) return {
+        const userData = await getUser(credential.username);
+
+        if (!userData) return {
             status: "error",
             message: MessageList.M003.message,
         };
-
-        const userData = userDocRef.data() as ExtendedDocumentData;
 
         if (userData.loginInfo.twoFactor.isEnabled) {
             if (twoFactorCode) {

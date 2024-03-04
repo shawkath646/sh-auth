@@ -19,10 +19,12 @@ export async function GET(request: NextRequest) {
 
     const response = { requestedClientId, requestedRedirectUri, requestedCodeChallenge, requestedCodeChallengeMethod, requestedScope, requestedResponseType, requestedState, requestedNonce };
 
-    const requestedAppDoc = await getAppData(response.requestedClientId);
-    const requestedAppData = requestedAppDoc.data;
-    if (requestedAppData.isSuspended) return NextResponse.redirect(new URL("/error?code=M013", request.url));
-    if (requestedAppData.scope !== response.requestedScope) return NextResponse.redirect(new URL("/error?code=M012", request.url));
+    const requestedAppData = await getAppData(response.requestedClientId);
+    if (requestedAppData.status !== "active") return NextResponse.redirect(new URL("/error?code=M013", request.url));
+    const requestedScopesArray = requestedScope.split(" ");
+    const scopesMatch = requestedScopesArray.some(scope => !requestedAppData.scope.includes(scope));
+    if (scopesMatch) return NextResponse.redirect(new URL("/error?code=M012", request.url));
+
     if (!requestedAppData.callbackUrl.includes(response.requestedRedirectUri)) return NextResponse.redirect(new URL("/error?code=M011", request.url));
 
     const cookieValidity = Number(process.env.OAUTH_COOKIE_VALIDITY) || 600;
@@ -36,5 +38,5 @@ export async function GET(request: NextRequest) {
         maxAge: cookieValidity,
     });
 
-    return NextResponse.redirect(new URL("/auth/protected/user-info", request.url));
+    return NextResponse.redirect(new URL("/auth/user-info", request.url));
 }

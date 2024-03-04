@@ -12,11 +12,9 @@ import { CustomSessionType, PrepareOAuthDataType, ProfileType } from "@/types/ty
 export default async function prepareOAuthRedirect() {
 
   const session = await auth() as CustomSessionType;
-  if (!session?.user) return;
 
   const decodedAuthData = await getOAuthData();
-  const appDoc = await getAppData(decodedAuthData.requestedClientId);
-  const appData = appDoc.data
+  const appData = await getAppData(decodedAuthData.requestedClientId);
 
   const privateSecret = appData.privateKey.replace(/\\n/g, '\n');
   const authCodeValidity = Number(process.env.AUTHORIZATION_CODE_VALIDITY) || 300;
@@ -48,7 +46,7 @@ export default async function prepareOAuthRedirect() {
     given_name: session.user.firstName,
     family_name: session.user.lastName,
     name: session.user.username,
-    aud: appData.appId,
+    aud: appData.id,
     iss: `${process.env.APP_BASE_URL}/api/oauth`,
     nonce: decodedAuthData.requestedNonce,
   };

@@ -8,8 +8,6 @@ interface ResponseType {
     code: string;
     grant_type: "authorization_code"
     | "refresh_token"
-    | "urn:ietf:params:oauth:grant-type:device_code"
-    | "urn:ietf:params:oauth:grant-type:jwt-bearer"
 }
 
 export async function POST(request: NextRequest) {
@@ -22,7 +20,7 @@ export async function POST(request: NextRequest) {
     try {
         responseAsObject = JSON.parse('{"' + decodedResponse.replace(/&/g, '","').replace(/=/g, '":"') + '"}') as ResponseType;
     } catch (error) {
-        return NextResponse.json({ error_description: "Missing or invalid parameter", error: "invalid_request" }, { status: 301 });
+        return NextResponse.json({ error_description: "The request is missing a required parameter or contains an invalid parameter.", error: "invalid_request" }, { status: 301 });
     }
 
     if (responseAsObject.grant_type === "authorization_code" && responseAsObject.code) {
@@ -36,7 +34,7 @@ export async function POST(request: NextRequest) {
             const codeChallenge = crypto.createHash('sha256').update(responseAsObject.code_verifier).digest('base64');
             codeVerifierValid = recievedData.requestData.requestedCodeChallenge === codeChallenge.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
         }
-        if (!codeVerifierValid) return NextResponse.json({ error: "Invalid code challenge " }, { status: 400 });
+        if (!codeVerifierValid) return NextResponse.json({ error_desciption: "The provided code challenge is invalid.", error: "invalid_grant" }, { status: 400 });
 
         const isAuthCodeValid = recievedData.authCode.code !== responseAsObject.code || (now > recievedData.authCode.expireOn);
         if (!isAuthCodeValid) NextResponse.json({ error_description: "Resource owner authentication failed", error: "invalid_grant" }, { status: 400 });

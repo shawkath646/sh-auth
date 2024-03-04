@@ -3,11 +3,11 @@ import Google from "next-auth/providers/google";
 import Facebook from "next-auth/providers/facebook";
 import GitHub from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
-import getUserData from "@/actions/getData/getUserData";
-import saveLoginHistory from "@/actions/database/saveLoginHistory";
-import validateUser from "@/actions/database/validateUser";
-import { CustomSessionType, UserDataType } from "@/types/types";
 import getUser from "@/actions/database/getUser";
+import validateUser from "@/actions/database/validateUser";
+import saveLoginHistory from "@/actions/database/saveLoginHistory";
+import { CustomSessionType, UserDataType } from "@/types/types";
+
 
 
 export const authConfig = {
@@ -29,8 +29,8 @@ export const authConfig = {
     ],
     secret: process.env.NEXTAUTH_SECRET,
     pages: {
-      signIn: '/auth/sign-in',
-      signOut: '/auth/protected/profile?tab=logout',
+      signIn: '/sign-in',
+      signOut: '/auth/profile/logout',
       error: '/error'
     },
     callbacks: {
@@ -41,10 +41,9 @@ export const authConfig = {
       },
       async session({ session, token }): Promise<CustomSessionType> {
         if (session.user) {
-          const { email, emailVerified, phoneNumber, username, firstName, lastName, dateOfBirth, gender, isEnterpriseUser, permissions, country, sub } = token;
+          const { id, email, emailVerified, phoneNumber, username, firstName, lastName, dateOfBirth, gender, isEnterpriseUser, permissions, country } = token;
           Object.assign(session.user, { 
-            id: sub || session.user.id,
-            email, emailVerified, gender, phoneNumber, username, firstName, lastName, dateOfBirth, isEnterpriseUser, permissions, country
+            id, email, emailVerified, gender, phoneNumber, username, firstName, lastName, dateOfBirth, isEnterpriseUser, permissions, country
           });
           if (session.user.id) await saveLoginHistory(session.user.id);
         }
@@ -52,9 +51,9 @@ export const authConfig = {
       },
       async jwt({ token }) {
         if (token.email) {
-          const userData = await getUserData(token.email) as UserDataType;
+          const userData = await getUser(token.email) as UserDataType;
           if (userData) {
-            const { permissions, username, isEnterpriseUser, contactInfo, personalData } = userData;
+            const { permissions, username, isEnterpriseUser, contactInfo, personalData, id } = userData;
             const primaryEmail = contactInfo.email.find(e => e.type === "primary")?.address;
             const emailVerified = contactInfo.email.find(e => e.type === "primary")?.verified;
             const firstName = personalData.firstName;
@@ -62,7 +61,7 @@ export const authConfig = {
             const phoneNumber = contactInfo.phoneNumber[0];
             const { dateOfBirth, gender } = personalData;
             const country = personalData.address.permanent.country;
-            Object.assign(token, { email: primaryEmail, emailVerified, phoneNumber, username, firstName, lastName, dateOfBirth, gender, isEnterpriseUser, permissions, country });
+            Object.assign(token, { id, email: primaryEmail, emailVerified, phoneNumber, username, firstName, lastName, dateOfBirth, gender, isEnterpriseUser, permissions, country });
           }
         }
         return token;

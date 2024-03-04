@@ -1,11 +1,15 @@
 "use server";
-import getAppBasicData from "@/actions/getData/getAppBasicData";
+import getAppData from "@/actions/database/getAppData";
+import getBrandData from "@/actions/database/getBrandData";
 import sendMail from "@/config/nodemailer.config";
+
 
 
 export async function sendTwoStepMail(destination: string, fullName: string, verificationCode: number) {
 
-    const { stockAppData, brandData } = await getAppBasicData();
+    const stockAppId = process.env.STOCK_APP_ID;
+    const stockAppData = await getAppData(stockAppId as string);
+    const brandData = await getBrandData();
 
     const mailVerificationMailLayout = {
         subject: "Two step verification code - CloudBurst Lab Account",

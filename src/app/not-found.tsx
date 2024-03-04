@@ -10,7 +10,7 @@ interface MessageListType {
 }
 
 export const metadata: Metadata = {
-    title: "Not found"
+    title: "404 Not found"
 }
 
 export default function Page() {

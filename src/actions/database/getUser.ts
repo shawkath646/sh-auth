@@ -1,7 +1,7 @@
 "use server";
 import { QueryDocumentSnapshot } from "firebase-admin/firestore";
 import { db } from "@/config/firebase.config";
-import { EmailType } from "@/types/types";
+import { EmailType, UserDataType } from "@/types/types";
 
 
 export default async function getUser(info: string) {
@@ -31,5 +31,5 @@ export default async function getUser(info: string) {
 
     if (filteredUser.length === 0) return;
 
-    return filteredUser[0];
+    return filteredUser[0].data() as UserDataType;
 }

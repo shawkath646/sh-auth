@@ -5,16 +5,13 @@ import { UserCredintialType, EmailType } from "@/types/types";
 
 export default async function validateUser(userCredintial: UserCredintialType) {
     
-    const userDoc = await getUser(userCredintial.username);
+    const userData = await getUser(userCredintial.username);
 
-    if (!userDoc) return null;
+    if (!userData) return null;
 
-    const userData = userDoc.data();
-    const passwordMatched = await bcrypt.compare(userCredintial.password, userData.password);
+    const passwordMatched = await bcrypt.compare(userCredintial.password, userData.password as string);
 
     if (!passwordMatched) return null;
-
-    delete userData.password;
 
     const primaryEmail = userData.contactInfo.email.find((email: EmailType) => email.type === "primary");
     const primaryEmailAddress = primaryEmail ? primaryEmail.address : null;

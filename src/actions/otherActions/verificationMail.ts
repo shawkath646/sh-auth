@@ -1,11 +1,15 @@
-import getAppBasicData from "../getData/getAppBasicData";
-import sendMail from "../../config/nodemailer.config";
+"use server";
+import getAppData from "@/actions/database/getAppData";
+import getBrandData from "@/actions/database/getBrandData";
+import sendMail from "@/config/nodemailer.config";
 
 let verificationCode = 0;
 
 export async function sendVerificationMail(destination: string, fullName: string) {
 
-    const { stockAppData, brandData } = await getAppBasicData();
+    const stockAppId = process.env.STOCK_APP_ID;
+    const stockAppData = await getAppData(stockAppId as string);
+    const brandData = await getBrandData();
 
     verificationCode = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
 

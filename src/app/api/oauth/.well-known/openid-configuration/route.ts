@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 interface OIDCReturnType {
     issuer: string;
@@ -18,10 +18,9 @@ interface OIDCReturnType {
     grant_types_supported: string[];
 }
 
-const baseURL = process.env.APP_BASE_URL;
+const baseURL = process.env.APP_BASE_URL as string;
 
-
-export async function GET(req: NextRequest) {
+export async function GET() {
 
     const oidcConfig: OIDCReturnType = {
         issuer: `${baseURL}/api/oauth`,
@@ -74,8 +73,6 @@ export async function GET(req: NextRequest) {
         grant_types_supported: [
             "authorization_code",
             "refresh_token",
-            "urn:ietf:params:oauth:grant-type:device_code",
-            "urn:ietf:params:oauth:grant-type:jwt-bearer"
         ]
     };
 
