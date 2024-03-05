@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   },
   description: "Manage your CloudBurst ID effortlessly to access all products and applications with a single, secure account. Register your web, mobile (Android, iOS), or desktop applications seamlessly for secure remote control. Obtain credentials (App ID, Secret) for OAuth 2.0 access with OpenID Connect.",
   category: "website",
+  icons: ["/favicon.ico"],
   publisher: "CloudBurst Lab",
   creator: "Shawkat Hossain Maruf",
   keywords: ["Next.js 14", "OAuth 2.0", "authentication", "providers", "sign in", "sign up", "create new account", "delete account", "register application", "client ID", "client secret", "simple website", "responsive website", "full stack website", "app information", "web application", "remote access", "OpenID client", "Cloudburst Lab"],

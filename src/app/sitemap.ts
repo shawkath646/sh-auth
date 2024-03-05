@@ -1,4 +1,4 @@
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from 'next';
  
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -21,19 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: 0.8
     },
     {
-        url: "https://sh-authentication-system.vercel.app/auth/profile",
-        changeFrequency: "never",
-        lastModified: new Date(),
-        priority: 0.8
-    },
-    {
-        url: "https://sh-authentication-system.vercel.app/profile/applications",
-        changeFrequency: "daily",
-        lastModified: new Date(),
-        priority: 0.8
-    },
-    {
-        url: "https://sh-authentication-system.vercel.app/profile/create-new",
+        url: "https://sh-authentication-system.vercel.app/privacy-policy",
         changeFrequency: "never",
         lastModified: new Date(),
         priority: 0.8
