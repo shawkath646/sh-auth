@@ -16,7 +16,8 @@ export default async function prepareOAuthRedirect() {
   const decodedAuthData = await getOAuthData();
   const appData = await getAppData(decodedAuthData.requestedClientId);
 
-  const privateSecret = appData.privateKey.replace(/\\n/g, '\n');
+  const privateSecretRaw = process.env.OAUTH_PRIVATE_KEY as string;
+  const privateSecret = privateSecretRaw.replace(/\\n/g, '\n');
   const authCodeValidity = Number(process.env.AUTHORIZATION_CODE_VALIDITY) || 300;
   const accessTokenValidity = Number(process.env.ACCESS_TOKEN_VALIDITY) || 10080;
   const refreshTokenValidity = Number(process.env.REFRESH_TOKEN_VALIDITY) || 86400;

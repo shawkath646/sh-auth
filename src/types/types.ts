@@ -175,7 +175,6 @@ export interface AppDataType {
   status: "active" | "suspended" | "inactive";
   scope: string[];
   description: string;
-  privateKey: string;
   appType: "web application"
   | "android application"
   | "ios application"

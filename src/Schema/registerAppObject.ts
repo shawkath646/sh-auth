@@ -16,7 +16,6 @@ const registerAppObject: AppDataType = {
     createdOn: fieldValue.serverTimestamp() as Timestamp,
     id: "",
     privacyPolicy: "",
-    privateKey: "",
     scope: ["openid", "email", "profile"],
     version: "",
     website: "",
