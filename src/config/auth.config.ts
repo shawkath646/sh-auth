@@ -8,8 +8,6 @@ import validateUser from "@/actions/database/validateUser";
 import saveLoginHistory from "@/actions/database/saveLoginHistory";
 import { CustomSessionType, UserDataType } from "@/types/types";
 
-
-
 export const authConfig = {
     providers: [
       Google,
@@ -36,7 +34,7 @@ export const authConfig = {
     callbacks: {
       async signIn({ user, credentials }) {
         const userExists = await getUser(user.email || credentials?.username as string);
-        if (!userExists) return "/auth/sign-up";
+        if (!userExists) return "/sign-up";
         return true;
       },
       async session({ session, token }): Promise<CustomSessionType> {

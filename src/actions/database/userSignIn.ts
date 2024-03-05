@@ -2,13 +2,13 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
+import { BuiltInProviderType } from "@auth/core/providers";
 import { signIn } from "@/app/auth";
-import { DocumentData } from "firebase-admin/firestore";
 import getUser from "./getUser";
 import { request, verify } from "@/actions/otherActions/twoFactorManager";
-import { UserDataType, UserCredintialType, StatusType, TwoStepType } from "@/types/types";
+import { UserCredintialType, StatusType, TwoStepType } from "@/types/types";
 import MessageList from "@/JsonData/MessagesList.json";
-import { BuiltInProviderType } from "@auth/core/providers";
+
 
 
 interface ExtendedStatusType extends StatusType {
@@ -26,12 +26,11 @@ export default async function userSignIn(provider: BuiltInProviderType, credenti
 
     if (provider === "credentials" && credential) {
 
-
         const userData = await getUser(credential.username);
 
         if (!userData) return {
             status: "error",
-            message: MessageList.M003.message,
+            message: MessageList.M020.message,
         };
 
         if (userData.loginInfo.twoFactor.isEnabled) {
@@ -46,7 +45,6 @@ export default async function userSignIn(provider: BuiltInProviderType, credenti
             status: "error",
             message: MessageList.M022.message,
         };
-
 
         try {
             await signIn(provider, { ...credential, redirect: false });

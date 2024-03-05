@@ -1,36 +1,129 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
 
-First, run the development server:
+# SH Authentication System
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<img src="https://github.com/shawkath646/sh-authentication-system/blob/main/src/app/opengraph-image.png?raw=true" alt="Project Thumbnail" height="300">
+  
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Project Type: Web Application
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Description:
 
-## Learn More
+The **SH Authentication System** is a web application designed to streamline user access across SH CloudBurst Labs' suite of applications. By implementing Single Sign-On (SSO) functionality, users can log in once with a single account and gain access to all associated applications seamlessly. This centralized authentication approach significantly reduces user inconvenience and eliminates the need for multiple login credentials, thereby enhancing user experience and minimizing potential login-related issues.
 
-To learn more about Next.js, take a look at the following resources:
+  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Project Duration: January 2024 - March 2024
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+  
 
-## Deploy on Vercel
+### Purpose:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+As a web developer, I often create projects for practice and production purposes. Many of these projects require a login system for protected data. Creating separate accounts for each project is not efficient and results in poor user management. To address this, I developed the SH Authentication System using OAuth 2.0 and OpenID client support. Now, users can access multiple applications under one account, and I can also save user-customized data. Additionally, other developers can utilize these features by registering their apps.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+  
+
+### Technology Used:
+
+- [NextJS 14](https://nextjs.org/)
+
+- [NextAuth v5](https://next-auth.js.org/)
+
+- [Typescript](https://www.typescriptlang.org/)
+
+- [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+
+- [TailwindCSS](https://tailwindcss.com/)
+
+- [Firestore](https://firebase.google.com/docs/firestore)
+
+  
+
+### Project Insights:
+
+1. Full-stack application management
+
+2. Simple UI, fully responsive with Dark mode support
+
+3. Complex backend connects with frontend
+
+4. User profile management
+
+5. Implementing two-step verification for better security
+
+6. User data management
+
+7. Critical logic to protect user data from unusual attacks
+
+8. Application registration and modification logics
+
+9. How OAuth works with OpenID Connect
+
+10. Backend REST API Handling
+
+11. Highly optimized for faster loading and prevention of crashing
+
+12. Time management for development alongside studies
+
+  
+
+### Live Link: [SH Authentication System](https://sh-authentication-system.vercel.app)
+
+  
+
+### Author:
+
+-  **Shawkat Hossain Maruf**
+
+- [Portfolio](https://sh-portfolio-maker.vercel.app/p/shawkath646)
+
+- Email: shawkath646@gmail.com
+
+- Occupation: Student
+
+  
+
+<img  src="https://storage.googleapis.com/sh-cloudburst-labs.appspot.com/cloudburst_lab_logo_transparent.png?GoogleAccessId=firebase-adminsdk-lf84z%40sh-cloudburst-labs.iam.gserviceaccount.com&Expires=4863727974&Signature=B1G9adLuRnjVIxGHoh3dyMVtGsR00KdmatEJRzKpMHPDjgsUX%2Bi9VftAz71puzbFmFsC5xP%2FHZFcBKQ7NBfJbkQzhiuywJMBmOSJlsn7mNfLgZlEsU5ReaNaMXDF6y3W65YeR76u2XBiQjAvVNl%2FEIvMvgbanNJWoDULrxF1OgeF1q8O270oT05ZfzIytLpi7c%2BbBIv6OtmzeUHNa0KJaTX0QPcdesQKFL0pQpaQPncdk6iQtOCOUafgKfQregHwn9iOo1iW1SM4sLw92uJURvLWimyq8JUWjc8J8AXyActsuwQs9IRQz5%2BUjc4k5zVwIS4fQDODvN8t97FDR2Sg7g%3D%3D"  alt="CloudBurst Logo"  height="150" width="150">
+
+*A product of [CloudBurst Lab](https://cloudburstlab.vercel.app)*
+  
+
+### SEO Keywords:
+
+- SH Authentication System
+
+- Single Sign-On (SSO)
+
+- NextJS 14
+
+- NextAuth v5
+
+- Typescript
+
+- JavaScript
+
+- TailwindCSS
+
+- Firestore
+
+- Web Application
+
+- OAuth 2.0
+
+- OpenID Connect
+
+- User Management
+
+- Security
+
+- Full-Stack Application
+
+- Responsive UI
+
+- Two-Step Verification
+
+- REST API
+
+- CloudBurst Lab

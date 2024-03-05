@@ -20,7 +20,6 @@ export default async function Page() {
             <Image src={bgBanner.src} alt="Background" className="object-cover object-center" fill priority />
             <div className="dark:bg-black dark:bg-opacity-50 relative">
                 <div className="min-h-screen container mx-auto flex items-center justify-center">
-
                     <section className="w-[400px] lg:w-[450px] bg-white dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 p-8 lg:p-7 rounded-xl text-black dark:text-gray-200 shadow-lg">
                         <div className="flex justify-center space-x-2 items-center mb-10">
                             {stockAppData?.appIcon && <Image src={stockAppData.appIcon} alt={`${stockAppData.appName} logo`} width={30} height={30} />}
