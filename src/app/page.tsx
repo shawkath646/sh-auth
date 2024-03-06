@@ -26,12 +26,12 @@ export default async function Home() {
             <p className="uppercase tracking-wide font-semibold text-blue-500 ml-10">Fast | Simple | Secured </p>
             <div className="mt-10 grid lg:grid-cols-2 gap-5">
               <section className="space-y-3 text-white dark:text-gray-200">
-                <p className="w-[400px] mx-auto">Create your free account today!</p>
-                <Link href="/sign-up" className="block w-[400px] mx-auto text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign up</Link>
+                <p className="w-[350px] lg:w-[400px] mx-auto">Create your free account today!</p>
+                <Link href="/sign-up" className="block w-[300px] lg:w-[400px] mx-auto text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign up</Link>
               </section>
               <section className="space-y-3 text-white dark:text-gray-200">
-                <p className="w-[400px] mx-auto">Already joined us?</p>
-                <Link href="/sign-in" className="block w-[400px] mx-auto text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign in</Link>
+                <p className="w-[350px] lg:w-[400px] mx-auto">Already joined us?</p>
+                <Link href="/sign-in" className="block w-[300px] lg:w-[400px] mx-auto text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign in</Link>
               </section>
             </div>
             <p className="text-sm mt-5 lg:mt-10 lg:ml-10 max-w-[600px] text-white dark:text-gray-200">The SH Authentication System is a web application designed to streamline user access across SH CloudBurst Labs' suite of applications. By implementing Single Sign-On (SSO) functionality, users can log in once with a single account and gain access to all associated applications seamlessly. This centralized authentication approach significantly reduces user inconvenience and eliminates the need for multiple login credentials, thereby enhancing user experience and minimizing potential login-related issues.</p>
