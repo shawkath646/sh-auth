@@ -1,8 +1,6 @@
 import { Timestamp, fieldValue } from "@/config/firebase.config";
 import { AppDataType } from "@/types/types";
 
-
-
 const registerAppObject: AppDataType = {
     appName: "",
     appIcon: "",
@@ -12,7 +10,7 @@ const registerAppObject: AppDataType = {
     author: "",
     contact: "",
     inactiveMessage: "",
-    callbackUrl: [],
+    redirectUrl: [],
     createdOn: fieldValue.serverTimestamp() as Timestamp,
     id: "",
     privacyPolicy: "",
@@ -20,6 +18,9 @@ const registerAppObject: AppDataType = {
     version: "",
     website: "",
     description: "",
+    inactiveUntil: null,
+    pageAlertAction: "",
+    pageAlertMessage: "",
 }
 
 export default registerAppObject;

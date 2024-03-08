@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import SHAS from "sh-authentication-system";
 import GlobalLayoutWrapper from "@/components/layout/GlobalLayoutWrapper";
 import "./globals.css";
 
@@ -24,14 +25,17 @@ export const metadata: Metadata = {
   icons: ["/favicon.ico"],
   publisher: "CloudBurst Lab",
   creator: "Shawkat Hossain Maruf",
-  keywords: ["Next.js 14", "OAuth 2.0", "authentication", "providers", "sign in", "sign up", "create new account", "delete account", "register application", "client ID", "client secret", "simple website", "responsive website", "full stack website", "app information", "web application", "remote access", "OpenID client", "Cloudburst Lab"],
+  keywords: ["Next.js 14", "OAuth 2.0", "authentication", "providers", "sign in", "sign up", "create new account", "delete account", "register application", "client ID", "client secret", "simple website", "responsive website", "full stack website", "app information", "web application", "remote access", "OpenID client", "Cloudburst Lab", "sh authentication system"],
   metadataBase: new URL('https://sh-authentication-system.vercel.app'),
   openGraph: {
     images: '/opengraph-image.png',
   },
 }
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
+
+  const { ContentWrapper } = await SHAS();
+
   return (
     <html lang="en">
       <head>
@@ -43,7 +47,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body className={poppins.className}>
-        <GlobalLayoutWrapper>{children}</GlobalLayoutWrapper>
+        <ContentWrapper>
+          <GlobalLayoutWrapper>{children}</GlobalLayoutWrapper>
+        </ContentWrapper>
         <SpeedInsights />
       </body>
     </html>

@@ -16,7 +16,8 @@ export default async function Page({ params }: { params: { slug: string } }) {
     if (!params.slug.length) redirect("/error?code=No slug");
     const appData = await getAppData(params.slug[0]);
 
-    appData.createdOn = await timeStampToDate(appData.createdOn)
+    appData.createdOn = await timeStampToDate(appData.createdOn);
+    if (appData.inactiveUntil) appData.inactiveUntil = await timeStampToDate(appData.inactiveUntil);
 
     return (
         <main className="min-h-screen bg-white dark:bg-black text-black dark:text-gray-200 w-full">

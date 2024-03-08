@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     const scopesMatch = requestedScopesArray.some(scope => !requestedAppData.scope.includes(scope));
     if (scopesMatch) return NextResponse.redirect(new URL("/error?code=M012", request.url));
 
-    if (!requestedAppData.callbackUrl.includes(response.requestedRedirectUri)) return NextResponse.redirect(new URL("/error?code=M011", request.url));
+    if (!requestedAppData.redirectUrl.includes(response.requestedRedirectUri)) return NextResponse.redirect(new URL("/error?code=M011", request.url));
 
     const cookieValidity = Number(process.env.OAUTH_COOKIE_VALIDITY) || 600;
 

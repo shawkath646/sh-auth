@@ -5,6 +5,7 @@ import getBrandData from "@/actions/database/getBrandData";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdArrowForwardIos } from "react-icons/md";
 import homeCover from "@/assets/home_cover.jpg"
+import CopierButton from "@/components/universel/CopierButton";
 
 
 export default async function Home() {
@@ -15,10 +16,10 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen w-full bg-white text-black dark:text-gray-200 dark:bg-black">
-      <div className="container mx-auto lg:pt-10">
-        <div className="relative">
-          <Image src={homeCover.src} alt="Home page cover" fill priority className="object-cover object-center lg:rounded" />
-          <header className="pt-5 z-20 relative p-3 lg:p-6 bg-black/40 lg:h-[500px]">
+      <div className="relative">
+        <Image src={homeCover.src} alt="Home page cover" fill priority className="object-cover object-center lg:rounded" />
+        <header className="pt-5 z-20 relative p-3 lg:p-6 bg-black/40 lg:h-[500px]">
+          <div className="container mx-auto lg:pt-10">
             <div className="flex items-center space-x-2">
               {appData.appIcon && <Image src={appData.appIcon} alt={`${appData.appName} icon`} height={30} width={30} />}
               <p className="text-xl md:text-2xl lg:text-3xl font-bold text-white dark:text-gray-200">{appData.appName}</p>
@@ -26,19 +27,32 @@ export default async function Home() {
             <p className="uppercase tracking-wide font-semibold text-blue-500 ml-10">Fast | Simple | Secured </p>
             <div className="mt-10 grid lg:grid-cols-2 gap-5">
               <section className="space-y-3 text-white dark:text-gray-200">
-                <p className="w-[350px] lg:w-[400px] mx-auto">Create your free account today!</p>
-                <Link href="/sign-up" className="block w-[300px] lg:w-[400px] mx-auto text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign up</Link>
+                <p className="lg:w-[400px] mx-auto">Create your free account today!</p>
+                <Link href="/sign-up" className="block lg:w-[400px] mx-auto text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign up</Link>
               </section>
               <section className="space-y-3 text-white dark:text-gray-200">
-                <p className="w-[350px] lg:w-[400px] mx-auto">Already joined us?</p>
-                <Link href="/sign-in" className="block w-[300px] lg:w-[400px] mx-auto text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign in</Link>
+                <p className="lg:w-[400px] mx-auto">Already joined us?</p>
+                <Link href="/sign-in" className="block lg:w-[400px] mx-auto text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign in</Link>
               </section>
             </div>
             <p className="text-sm mt-5 lg:mt-10 lg:ml-10 max-w-[600px] text-white dark:text-gray-200">The SH Authentication System is a web application designed to streamline user access across SH CloudBurst Labs' suite of applications. By implementing Single Sign-On (SSO) functionality, users can log in once with a single account and gain access to all associated applications seamlessly. This centralized authentication approach significantly reduces user inconvenience and eliminates the need for multiple login credentials, thereby enhancing user experience and minimizing potential login-related issues.</p>
-          </header>
-        </div>
-
+          </div>
+        </header>
+      </div>
+      <div className="container mx-auto">
         <div className="p-5 lg:p-0">
+          <section className="mt-3">
+            <h3 className="mb-2 text-lg">Quick start</h3>
+            <code className="p-3 bg-gray-200 dark:bg-gray-800 rounded inline-flex space-x-2 lg:space-x-3 text-sm lg:text-base items-center">
+              <span>$</span>
+              <span>npm i --save-dev</span>
+              <span className="text-amber-700 dark:text-amber-500">sh-authentication-system</span>
+              <CopierButton text="npm i --save-dev sh-authentication-system" className="hover:text-gray-700 dark:hover:text-gray-400 transition-all" />
+            </code>
+            <div className="my-4">
+              <Link href="https://www.npmjs.com/package/sh-authentication-system" className="text-violet-600 hover:text-violet-700 transition-all">Read docs...</Link>
+            </div>
+          </section>
           <section className="mt-10 grid lg:grid-cols-2 gap-5">
             <div>
               <p className="text-xl font-medium">Why us?</p>

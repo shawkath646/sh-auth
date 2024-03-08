@@ -219,7 +219,7 @@ export default function SignUpBox({ stockAppIcon, stockAppName }: { stockAppIcon
                                 <div className="customDatePickerWidth">
                                     <ReactDatePicker
                                         selected={field.value}
-                                        onChange={(date) => field.onChange(date)}
+                                        onChange={field.onChange}
                                         dateFormat="yyyy-MM-dd"
                                         placeholderText="yyyy-MM-dd"
                                         className="block py-2 px-2 rounded-lg outline-none border text-sm bg-gray-100 dark:bg-gray-700 aria-invalid:border-red-500 border-gray-200 dark:border-gray-700 focus:border-violet-600 read-only:text-gray-400 dark:text-gray-300 transition-all w-full"

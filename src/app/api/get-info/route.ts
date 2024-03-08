@@ -10,36 +10,11 @@ export async function POST(request: NextRequest) {
     const recieved = await request.json();
     const appId = recieved.client_id, appSecret = recieved.client_secret;
     if (!appId || !appSecret) return NextResponse.json({ status: "error", message: MesssagesList.M019.message }, { status: MesssagesList.M019.code });
-    const appData = await getAppData(appId);
-    if (appSecret !== appData.appSecret) return NextResponse.json({ status: "error", message: MesssagesList.M002.message }, { status: MesssagesList.M002.code });
+    const appInfo: Partial<AppDataType> = await getAppData(appId);
+    if (appSecret !== appInfo.appSecret) return NextResponse.json({ status: "error", message: MesssagesList.M002.message }, { status: MesssagesList.M002.code });
     const brandInfo = await getBrandData();
 
-    const {
-        appName,
-        appIcon,
-        id,
-        appType,
-        author,
-        inactiveMessage,
-        version,
-        contact,
-        createdOn,
-        status
-    } = appData;
-
-    const appInfo: Partial<AppDataType> = {
-        appName,
-        appIcon,
-        id,
-        appType,
-        author,
-        inactiveMessage,
-        version,
-        contact,
-        createdOn,
-        status
-    };
-
+    delete appInfo.appSecret, appInfo.redirectUrl, appInfo.scope;
 
     return NextResponse.json({ status: "success", message: MesssagesList.M001.message, data: { appInfo, brandInfo } }, { status: MesssagesList.M001.code });
 }

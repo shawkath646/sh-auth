@@ -1,33 +1,38 @@
 "use client";
 import { Fragment, useState } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm, FieldError } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Transition } from "@headlessui/react";
 import { Listbox } from "@headlessui/react";
+import RedirectUrlBox from "@/app/auth/profile/applications/create-new/RedirectUrlBox";
 import PictureUpload from "@/components/universel/PictureUpload";
+import ReactDatePicker from "react-datepicker";
 import registerApp from "@/actions/database/profile/registerApp";
 import registerAppSchema from "@/Schema/registerAppSchema";
 import toTitleCase from "@/utils/toTitleCase";
-import { AppRegisterFormType } from "@/types/types";
+import { PartialAppDataType } from "@/types/types";
 import { CgPlayListAdd, CgSpinner } from "react-icons/cg";
 import { PiCaretUpDownBold } from "react-icons/pi";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function CreateNewBox() {
 
     const [isLoading, setLoading] = useState(false);
     const [isAccepted, setAccepted] = useState(false);
 
-    const { control, register, handleSubmit, watch, clearErrors, setError, formState: { errors } } = useForm<AppRegisterFormType>({
-        resolver: yupResolver(registerAppSchema)
+    const { control, register, handleSubmit, watch, clearErrors, setError, formState: { errors } } = useForm<PartialAppDataType>({
+        resolver: yupResolver(registerAppSchema),
+        defaultValues: {
+            redirectUrl: []
+        }
     });
 
-    const { status } = watch();
+    const { status: inactiveSelected } = watch();
 
-    const onSubmit: SubmitHandler<AppRegisterFormType> = async (data) => {
+    const onSubmit: SubmitHandler<PartialAppDataType> = async (data) => {
         setLoading(true);
         await registerApp(data);
     }
-
 
     const applicationType = ["Web application", "Android application", "IOS application", "Desktop applicatoin"];
     const applicationStatus = ["Active", "Inactive"];
@@ -142,7 +147,46 @@ export default function CreateNewBox() {
                         </div>
                     </div>
                 </div>
-
+                {inactiveSelected === "inactive" && (
+                    <div className="grid lg:grid-cols-2 gap-4">
+                        <div className="mx-auto w-[350px] md:w-[400px] lg:mx-0">
+                            <label className="block uppercase font-medium text-gray-600 dark:text-gray-400 text-sm">Inactive message</label>
+                            <input type="text" placeholder="" {...register("inactiveMessage")} aria-invalid={errors.inactiveMessage ? "true" : "false"} className="bg-gray-200 dark:bg-gray-800 outline-none border border-gray-400 dark:border-gray-700 aria-invalid:border-red-500 rounded py-1.5 px-2 mt-1 focus:border-blue-500 w-full transition-all text-sm" />
+                            {errors.inactiveMessage && <p className="text-xs text-red-500 mt-1">{errors.inactiveMessage.message}</p>}
+                        </div>
+                        <div className="mx-auto w-[350px] md:w-[400px] lg:mx-0">
+                            <label className="block uppercase font-medium text-gray-600 dark:text-gray-400 text-sm">Inactive until</label>
+                            <Controller
+                                name="inactiveUntil"
+                                control={control}
+                                render={({ field }) => (
+                                    <div className="customDatePickerWidth">
+                                        <ReactDatePicker
+                                            selected={field.value}
+                                            onChange={field.onChange}
+                                            dateFormat="yyyy-MM-dd"
+                                            placeholderText="yyyy-MM-dd"
+                                            className="bg-gray-200 dark:bg-gray-800 outline-none border border-gray-400 dark:border-gray-700 aria-invalid:border-red-500 rounded py-1.5 px-2 mt-1 focus:border-blue-500 w-full transition-all text-sm"
+                                        />
+                                    </div>
+                                )}
+                            />
+                            {errors.inactiveUntil && <p className="text-xs text-red-500 mt-1">{errors.inactiveUntil.message}</p>}
+                        </div>
+                    </div>
+                )}
+                <div className="grid lg:grid-cols-2 gap-4">
+                    <div className="mx-auto w-[350px] md:w-[400px] lg:mx-0">
+                        <label className="block uppercase font-medium text-gray-600 dark:text-gray-400 text-sm">Page Alert Message</label>
+                        <input type="text" placeholder="" {...register("pageAlertMessage")} aria-invalid={errors.pageAlertAction ? "true" : "false"} className="bg-gray-200 dark:bg-gray-800 outline-none border border-gray-400 dark:border-gray-700 aria-invalid:border-red-500 rounded py-1.5 px-2 mt-1 focus:border-blue-500 w-full transition-all text-sm" />
+                        {errors.pageAlertMessage && <p className="text-xs text-red-500 mt-1">{errors.pageAlertMessage.message}</p>}
+                    </div>
+                    <div className="mx-auto w-[350px] md:w-[400px] lg:mx-0">
+                        <label className="block uppercase font-medium text-gray-600 dark:text-gray-400 text-sm">Page Alert Action</label>
+                        <input type="text" placeholder="" {...register("pageAlertAction")} aria-invalid={errors.pageAlertAction ? "true" : "false"} className="bg-gray-200 dark:bg-gray-800 outline-none border border-gray-400 dark:border-gray-700 aria-invalid:border-red-500 rounded py-1.5 px-2 mt-1 focus:border-blue-500 w-full transition-all text-sm" />
+                        {errors.pageAlertAction && <p className="text-xs text-red-500 mt-1">{errors.pageAlertAction.message}</p>}
+                    </div>
+                </div>
                 <div className="grid lg:grid-cols-2 gap-4">
                     <div className="mx-auto w-[350px] md:w-[400px] lg:mx-0">
                         <label className="block uppercase font-medium text-gray-600 dark:text-gray-400 text-sm">OAuth scope</label>
@@ -150,8 +194,13 @@ export default function CreateNewBox() {
                     </div>
                     <div className="mx-auto w-[350px] md:w-[400px] lg:mx-0">
                         <label className="block uppercase font-medium text-gray-600 dark:text-gray-400 text-sm">Redirect url</label>
-                        <input type="text" placeholder="" {...register("redirectUrl")} aria-invalid={errors.redirectUrl ? "true" : "false"} className="bg-gray-200 dark:bg-gray-800 aria-invalid:border-red-500 outline-none border border-gray-400 dark:border-gray-700 rounded py-1.5 px-2 mt-1 focus:border-blue-500 w-full transition-all text-sm" />
-                        {errors.redirectUrl && <p className="text-xs text-red-500 mt-1">{errors.redirectUrl.message}</p>}
+                        <Controller
+                            name="redirectUrl"
+                            control={control}
+                            render={({ field }) => (
+                                <RedirectUrlBox field={field} isEditMode={true} error={errors.redirectUrl as (FieldError | undefined)[]} />
+                            )}
+                        />
                     </div>
                 </div>
                 <div className="grid lg:grid-cols-2 gap-4">
@@ -172,13 +221,6 @@ export default function CreateNewBox() {
                         <input type="text" placeholder="" {...register("privacyPolicy")} aria-invalid={errors.privacyPolicy ? "true" : "false"} className="bg-gray-200 dark:bg-gray-800 outline-none border border-gray-400 dark:border-gray-700 aria-invalid:border-red-500 rounded py-1.5 px-2 mt-1 focus:border-blue-500 w-full transition-all text-sm" />
                         {errors.privacyPolicy && <p className="text-xs text-red-500 mt-1">{errors.privacyPolicy.message}</p>}
                     </div>
-                    {status === "inactive" && (
-                        <div className="mx-auto w-[350px] md:w-[400px] lg:mx-0">
-                            <label className="block uppercase font-medium text-gray-600 dark:text-gray-400 text-sm">Inactive message</label>
-                            <input type="text" placeholder="" {...register("inactiveMessage")} aria-invalid={errors.inactiveMessage ? "true" : "false"} className="bg-gray-200 dark:bg-gray-800 outline-none border border-gray-400 dark:border-gray-700 aria-invalid:border-red-500 rounded py-1.5 px-2 mt-1 focus:border-blue-500 w-full transition-all text-sm" />
-                            {errors.inactiveMessage && <p className="text-xs text-red-500 mt-1">{errors.inactiveMessage.message}</p>}
-                        </div>
-                    )}
                 </div>
             </section>
             <section className="text-gray-500 2xl:w-[600px]">

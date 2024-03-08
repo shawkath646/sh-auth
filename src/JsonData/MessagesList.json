@@ -51,6 +51,10 @@
         "code": 403,
         "message": "This OAuth 2.0 application has been suspended due to unusual activities. Please contact the help center for assistance."
     },
+    "M014": {
+        "code": 200,
+        "message": "Application data has been successfully updated!"
+    },
     "M017": {
         "code": 401,
         "message": "The provided credentials do not match."

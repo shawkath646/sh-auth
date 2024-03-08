@@ -170,16 +170,37 @@ export interface AppDataType {
   website: string;
   privacyPolicy: string;
   contact: string;
-  callbackUrl: string[];
+  redirectUrl: string[];
   inactiveMessage: string;
-  status: "active" | "suspended" | "inactive";
+  status: "active" | "suspended" | "inactive" | "";
+  inactiveUntil: Date | null;
+  pageAlertMessage: string;
+  pageAlertAction: string;
   scope: string[];
   description: string;
   appType: "web application"
   | "android application"
   | "ios application"
-  | "native application";
+  | "native application"
+  | "";
 
+}
+
+export interface PartialAppDataType {
+  appIcon?: string;
+  appName: string;
+  version: string;
+  website: string;
+  privacyPolicy?: string;
+  contact: string;
+  redirectUrl: string[];
+  inactiveMessage?: string;
+  status: string;
+  inactiveUntil?: Date | null;
+  pageAlertMessage?: string;
+  pageAlertAction?: string;
+  description?: string;
+  appType: string;
 }
 
 export interface BrandDataType {
@@ -239,18 +260,4 @@ export interface PrepareOAuthDataType {
   userId: string;
   appId: string;
   requestData: CookieJsonType
-}
-
-export interface AppRegisterFormType {
-  appName: string;
-  appIcon?: string;
-  appType: string;
-  description: string
-  version: string;
-  status: string;
-  inactiveMessage: string;
-  redirectUrl: string;
-  contact: string;
-  website: string;
-  privacyPolicy: string;
 }
