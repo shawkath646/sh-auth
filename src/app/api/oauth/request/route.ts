@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
     const cookieValidity = Number(process.env.OAUTH_COOKIE_VALIDITY) || 600;
 
     const cookieStore = cookies();
-    const { token: cookieToken } = getToken({ payload: response, expiresIn: cookieValidity });
+    const { token: cookieToken } = await getToken({ payload: response, expiresIn: cookieValidity });
 
     cookieStore.set("recieved_response", cookieToken, {
         httpOnly: true,

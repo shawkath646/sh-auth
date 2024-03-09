@@ -62,9 +62,9 @@ export default async function prepareOAuthRedirect() {
   }
 
   
-  const { token: accessToken, expireOn: accessTokenExpireOn } = getToken({ expiresIn: accessTokenValidity });
-  const { token: refreshToken, expireOn: refreshTokenExpireOn } = getToken({ expiresIn: refreshTokenValidity });
-  const { token: idToken, expireOn: idTokenExpireOn } = getToken({ payload: profile, secret: privateSecret, expiresIn: 300, algorithm: "RS256" });
+  const { token: accessToken, expireOn: accessTokenExpireOn } = await getToken({ expiresIn: accessTokenValidity });
+  const { token: refreshToken, expireOn: refreshTokenExpireOn } = await getToken({ expiresIn: refreshTokenValidity });
+  const { token: idToken, expireOn: idTokenExpireOn } = await getToken({ payload: profile, secret: privateSecret, expiresIn: 300, algorithm: "RS256" });
   const authCode = await stringPromise;
 
   const dataSet = {

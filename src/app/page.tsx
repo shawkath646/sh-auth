@@ -1,16 +1,17 @@
 import Link from "next/link";
 import Image from "next/image";
+import CopierButton from "@/components/universel/CopierButton";
 import getAppData from "@/actions/database/getAppData";
 import getBrandData from "@/actions/database/getBrandData";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdArrowForwardIos } from "react-icons/md";
 import homeCover from "@/assets/home_cover.jpg"
-import CopierButton from "@/components/universel/CopierButton";
+
 
 
 export default async function Home() {
 
-  const appId = process.env.STOCK_APP_ID as string;
+  const appId = process.env.SHAS_APP_ID as string;
   const appData = await getAppData(appId);
   const brandData = await getBrandData();
 

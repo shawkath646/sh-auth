@@ -9,7 +9,7 @@ export default async function getOAuthInformationCookie(): Promise<CookieJsonTyp
     const cookieStore = cookies();
     const authData = cookieStore.get("recieved_response");
     if (!authData?.value) return redirect("/error?code=M007");
-    const decodedAuthData = verifyToken(authData.value) as CookieJsonType;
+    const decodedAuthData = await verifyToken(authData.value) as CookieJsonType;
     if (!decodedAuthData) return redirect("/error?code=M008");
     return decodedAuthData;
 }

@@ -27,6 +27,7 @@
     "react-icons": "^5.0.1",
     "react-textarea-autosize": "^8.5.3",
     "sharp": "^0.33.2",
+    "shas-app-controller": "^1.0.0",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-aria-attributes": "^2.0.1",
     "yup": "^1.3.3"
@@ -39,7 +40,6 @@
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.18",
     "postcss": "^8.4.35",
-    "sh-authentication-system": "^2.0.1",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

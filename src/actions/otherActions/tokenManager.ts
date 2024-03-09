@@ -8,7 +8,7 @@ interface ExtendedParams extends jwt.SignOptions {
 
 const secretKey = process.env.JWT_AUTH_SECRET || '2780a4d8341f0a312f093765120aac9f';
 
-function verifyToken(token: string) {
+async function verifyToken(token: string) {
     try {
         const decoded = jwt.verify(token, secretKey);
         return decoded;
@@ -17,7 +17,7 @@ function verifyToken(token: string) {
     }
 }
 
-function getToken({ payload = {}, secret = secretKey, ...rest }: ExtendedParams) {
+async function getToken({ payload = {}, secret = secretKey, ...rest }: ExtendedParams) {
     const expireOn = new Date();
     const token = jwt.sign(payload, secret, { ...rest }) as string;
     if (rest && rest.expiresIn) {

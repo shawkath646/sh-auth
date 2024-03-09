@@ -4,7 +4,7 @@ import getBrandData from "@/actions/database/getBrandData";
 
 export default async function Page() {
 
-    const appId = process.env.STOCK_APP_ID as string;
+    const appId = process.env.SHAS_APP_ID as string;
     const appData = await getAppData(appId);
     const brandData = await getBrandData();
 

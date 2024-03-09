@@ -7,7 +7,7 @@ let verificationCode = 0;
 
 export async function sendVerificationMail(destination: string, fullName: string) {
 
-    const stockAppId = process.env.STOCK_APP_ID;
+    const stockAppId = process.env.SHAS_APP_ID;
     const stockAppData = await getAppData(stockAppId as string);
     const brandData = await getBrandData();
 

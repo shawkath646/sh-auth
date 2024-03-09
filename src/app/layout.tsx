@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import SHAS from "sh-authentication-system";
+import SHAS from "shas-app-controller";
 import GlobalLayoutWrapper from "@/components/layout/GlobalLayoutWrapper";
 import "./globals.css";
 
@@ -34,7 +34,9 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
 
-  const { ContentWrapper } = await SHAS();
+  const { ContentWrapper } = await SHAS({
+    cache: "no-cache"
+  });
 
   return (
     <html lang="en">
