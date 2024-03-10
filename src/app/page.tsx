@@ -42,16 +42,31 @@ export default async function Home() {
       </div>
       <div className="container mx-auto">
         <div className="p-5 lg:p-0">
-          <section className="mt-3">
-            <h3 className="mb-2 text-lg">Quick start</h3>
-            <code className="p-3 bg-gray-200 dark:bg-gray-800 rounded inline-flex space-x-2 lg:space-x-3 text-sm lg:text-base items-center">
-              <span>$</span>
-              <span>npm i --save-dev</span>
-              <span className="text-amber-700 dark:text-amber-500">sh-authentication-system</span>
-              <CopierButton text="npm i --save-dev sh-authentication-system" className="hover:text-gray-700 dark:hover:text-gray-400 transition-all" />
-            </code>
-            <div className="my-4">
-              <Link href="https://www.npmjs.com/package/sh-authentication-system" className="text-violet-600 hover:text-violet-700 transition-all">Read docs...</Link>
+          <p className="text-blue-500 text-lg md:text-xl lg:text-2xl lg:mt-10  md:mt-8 mt-5 font-medium text-center">NPM Package (Only for NextJS)</p>
+          <section className="mt-8 grid lg:grid-cols-2">
+            <div className="mx-auto text-center">
+              <h3 className="mb-4 text-lg lg:text-2xl">SHAS App Controller</h3>
+              <code className="p-3 bg-gray-200 dark:bg-gray-800 rounded inline-flex space-x-2 lg:space-x-3 text-sm lg:text-base items-center">
+                <span>$</span>
+                <span>npm i </span>
+                <span className="text-amber-700 dark:text-amber-500">shas-app-controller</span>
+                <CopierButton text="npm i --save-dev sh-authentication-system" className="hover:text-gray-700 dark:hover:text-gray-400 transition-all" />
+              </code>
+              <div className="my-4">
+                <Link href="https://www.npmjs.com/package/shas-app-controller" className="text-violet-500 bg-violet-600/30 px-3 py-2 rounded hover:text-white hover:bg-violet-600 transition-all dark:hover:text-gray-200">Read docs</Link>
+              </div>
+            </div>
+            <div className="mx-auto text-center">
+              <h3 className="mb-4 text-lg lg:text-2xl">CloudBurst Lab Provider</h3>
+              <code className="p-3 bg-gray-200 dark:bg-gray-800 rounded inline-flex space-x-2 lg:space-x-3 text-sm lg:text-base items-center">
+                <span>$</span>
+                <span>npm i </span>
+                <span className="text-amber-700 dark:text-amber-500">next-auth-provider-cloudburst-lab</span>
+                <CopierButton text="npm i --save-dev sh-authentication-system" className="hover:text-gray-700 dark:hover:text-gray-400 transition-all" />
+              </code>
+              <div className="my-4">
+                <Link href="https://www.npmjs.com/package/next-auth-provider-cloudburst-lab" className="text-violet-500 bg-violet-600/30 px-3 py-2 rounded hover:text-white dark:hover:text-gray-200 hover:bg-violet-600 transition-all">Read docs</Link>
+              </div>
             </div>
           </section>
           <section className="mt-10 grid lg:grid-cols-2 gap-5">

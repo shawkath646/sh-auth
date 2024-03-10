@@ -15,7 +15,6 @@ import formatDate from "@/utils/formatDate";
 import { AppDataType, PartialAppDataType, StatusType } from "@/types/types";
 import { BiReset } from "react-icons/bi";
 import { CiEdit } from "react-icons/ci";
-import { FiClipboard } from "react-icons/fi";
 import { MdOutlineEditOff } from "react-icons/md";
 import { PiCaretUpDownBold } from "react-icons/pi";
 import { CgSpinner } from "react-icons/cg";
@@ -80,7 +79,6 @@ export default function ManageBox({ appData }: { appData: AppDataType }) {
                     return { ...acc, [key]: dataValue };
                 }
             }
-
             return acc;
         }, {} as Partial<AppDataType>);
 
@@ -92,6 +90,8 @@ export default function ManageBox({ appData }: { appData: AppDataType }) {
             setLoading(false);
             return;
         }
+
+        newObject.id = appData.id;
 
         const response = await updateApp(newObject, appData.appIcon);
         setStatusMessage(response);
