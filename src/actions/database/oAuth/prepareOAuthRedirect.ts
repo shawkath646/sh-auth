@@ -57,7 +57,6 @@ export default async function prepareOAuthRedirect() {
     profile.dateOfBirth = session.user.dateOfBirth;
     profile.country = session.user.country;
     profile.phoneNumber = session.user.phoneNumber;
-    profile.permissions = session.user.permissions;
     profile.isEnterpriseUser = session.user.isEnterpriseUser;
   }
 

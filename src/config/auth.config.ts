@@ -39,9 +39,9 @@ export const authConfig = {
       },
       async session({ session, token }): Promise<CustomSessionType> {
         if (session.user) {
-          const { id, email, emailVerified, phoneNumber, username, firstName, lastName, dateOfBirth, gender, isEnterpriseUser, permissions, country } = token;
+          const { id, email, emailVerified, phoneNumber, username, firstName, lastName, dateOfBirth, gender, isEnterpriseUser, country } = token;
           Object.assign(session.user, { 
-            id, email, emailVerified, gender, phoneNumber, username, firstName, lastName, dateOfBirth, isEnterpriseUser, permissions, country
+            id, email, emailVerified, gender, phoneNumber, username, firstName, lastName, dateOfBirth, isEnterpriseUser, country
           });
           if (session.user.id) await saveLoginHistory(session.user.id);
         }
@@ -51,7 +51,7 @@ export const authConfig = {
         if (token.email) {
           const userData = await getUser(token.email) as UserDataType;
           if (userData) {
-            const { permissions, username, isEnterpriseUser, contactInfo, personalData, id } = userData;
+            const { username, isEnterpriseUser, contactInfo, personalData, id } = userData;
             const primaryEmail = contactInfo.email.find(e => e.type === "primary")?.address;
             const emailVerified = contactInfo.email.find(e => e.type === "primary")?.verified;
             const firstName = personalData.firstName;
@@ -59,7 +59,7 @@ export const authConfig = {
             const phoneNumber = contactInfo.phoneNumber[0];
             const { dateOfBirth, gender } = personalData;
             const country = personalData.address.permanent.country;
-            Object.assign(token, { id, email: primaryEmail, emailVerified, phoneNumber, username, firstName, lastName, dateOfBirth, gender, isEnterpriseUser, permissions, country });
+            Object.assign(token, { id, email: primaryEmail, emailVerified, phoneNumber, username, firstName, lastName, dateOfBirth, gender, isEnterpriseUser, country });
           }
         }
         return token;

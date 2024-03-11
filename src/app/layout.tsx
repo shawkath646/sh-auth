@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
 
   const { ContentWrapper } = await SHAS({
-    cache: "no-cache"
+    imageOptimization: true
   });
 
   return (

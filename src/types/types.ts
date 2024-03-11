@@ -41,8 +41,8 @@ export interface PersonalDataType {
 }
 
 export interface PermissionType {
-  role: string;
-  app_id: string;
+  roles: string[];
+  appId: string;
 }
 
 export interface ContactInfoType {
@@ -102,7 +102,6 @@ export interface CustomSessionType {
     phoneNumber: string;
     gender: "male" | "female" | "others";
     dateOfBirth: Timestamp | Date | TimestampFieldValue;
-    permissions?: PermissionType[];
     country: string;
     isEnterpriseUser: boolean;
   }

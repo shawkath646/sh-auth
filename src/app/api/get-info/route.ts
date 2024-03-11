@@ -16,5 +16,5 @@ export async function POST(request: NextRequest) {
 
     delete appInfo.appSecret, appInfo.redirectUrl, appInfo.scope;
 
-    return NextResponse.json({ status: "success", message: MesssagesList.M001.message, data: { appInfo, brandInfo } }, { status: MesssagesList.M001.code });
+    return NextResponse.json({ status: "success", message: MesssagesList.M015.message, data: { appInfo, brandInfo } }, { status: MesssagesList.M015.code });
 }

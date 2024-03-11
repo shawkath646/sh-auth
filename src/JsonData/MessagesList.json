@@ -55,6 +55,10 @@
         "code": 200,
         "message": "Application data has been successfully updated!"
     },
+    "M015": {
+        "code": 200,
+        "message": "Request has been successfully granted."
+    },
     "M017": {
         "code": 401,
         "message": "The provided credentials do not match."
