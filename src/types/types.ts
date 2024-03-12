@@ -104,6 +104,7 @@ export interface CustomSessionType {
     dateOfBirth: Timestamp | Date | TimestampFieldValue;
     country: string;
     isEnterpriseUser: boolean;
+    phoneNumberVerified: boolean;
   }
   expires: string
 }
@@ -154,6 +155,7 @@ export interface ProfileType {
   dateOfBirth?: Date | TimestampFieldValue | Timestamp;
   country?: string;
   phoneNumber?: string;
+  phoneNumberVerified?: boolean;
   permissions?: PermissionType[];
   isEnterpriseUser?: boolean;
 };

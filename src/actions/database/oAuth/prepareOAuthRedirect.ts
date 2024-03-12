@@ -6,7 +6,6 @@ import { auth } from "@/app/auth";
 import { db } from "@/config/firebase.config";
 import getOAuthData from "@/actions/oAuth/getOAuthInformationCookie";
 import getAppData from "@/actions/database/getAppData";
-import timeStampToDate from "@/utils/timeStampToDate";
 import { CustomSessionType, PrepareOAuthDataType, ProfileType } from "@/types/types";
 
 
@@ -62,6 +61,7 @@ export default async function prepareOAuthRedirect() {
     profile.dateOfBirth = session.user.dateOfBirth;
     profile.country = session.user.country;
     profile.phoneNumber = session.user.phoneNumber;
+    profile.phoneNumberVerified = session.user.phoneNumberVerified
     profile.isEnterpriseUser = session.user.isEnterpriseUser;
   }
 
