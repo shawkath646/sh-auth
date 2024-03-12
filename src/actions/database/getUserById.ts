@@ -1,9 +1,11 @@
-"use server";
+import { cache } from "react";
 import { db } from "@/config/firebase.config";
 import { UserDataType } from "@/types/types";
 
-export default async function getUserById(userId: string): Promise<UserDataType | null> {
+const getUserById = cache(async(userId: string) => {
     const docRef = await db.collection("userData").doc(userId).get();
     if (!docRef.exists) return null;
     return docRef.data() as UserDataType;
-}
+})
+
+export default getUserById;

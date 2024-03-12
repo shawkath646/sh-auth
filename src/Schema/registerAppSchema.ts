@@ -47,7 +47,14 @@ const registerAppSchema = yup.object().shape({
         .of(
             yup.string()
                 .required('Redirect URL is required')
-                .url('Invalid URL format for redirect URL')
+                .test('is-url', 'Invalid URL format for redirect URL', (value) => {
+                    try {
+                        const url = new URL(value);
+                        return url.hostname === 'localhost' || /^\d+\.\d+\.\d+\.\d+$/.test(url.hostname) || /^(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$/.test(url.hostname);
+                    } catch (error) {
+                        return false;
+                    }
+                })
         ),
     privacyPolicy: yup.string()
         .url('Invalid URL format for privacy policy'),

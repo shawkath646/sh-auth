@@ -65,7 +65,7 @@
     },
     "M018": {
         "code": 404,
-        "message": "App not found in server."
+        "message": "The application you are requesting does not exist on the server."
     },
     "M019": {
         "code": 400,
@@ -82,6 +82,10 @@
     "M022": {
         "code": 403,
         "message": "Account suspended due to detected unusual activity. Please contact our Help Center for assistance."
+    },
+    "M023": {
+        "code": 404,
+        "message": "Branding and parent data do not exist on the server."
     }
 }
 

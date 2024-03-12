@@ -1,7 +1,7 @@
-"use server";
 import { headers } from "next/headers";
+import { cache } from "react";
 
-export default async function getUserAgentData(): Promise<string>{
+const getUserAgentData = cache(async() => {
     const headersList = headers();
 
     const userAgent = headersList.get("user-agent") || "Unknown";
@@ -23,4 +23,6 @@ export default async function getUserAgentData(): Promise<string>{
     }
 
     return `${osString} (${browserString})`;
-}
+})
+
+export default getUserAgentData;

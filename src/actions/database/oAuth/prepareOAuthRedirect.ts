@@ -6,7 +6,9 @@ import { auth } from "@/app/auth";
 import { db } from "@/config/firebase.config";
 import getOAuthData from "@/actions/oAuth/getOAuthInformationCookie";
 import getAppData from "@/actions/database/getAppData";
+import timeStampToDate from "@/utils/timeStampToDate";
 import { CustomSessionType, PrepareOAuthDataType, ProfileType } from "@/types/types";
+
 
 
 export default async function prepareOAuthRedirect() {
@@ -49,10 +51,13 @@ export default async function prepareOAuthRedirect() {
     name: session.user.username,
     aud: appData.id,
     iss: `${process.env.APP_BASE_URL}/api/oauth`,
-    nonce: decodedAuthData.requestedNonce,
   };
+
+  if (decodedAuthData.requestedNonce) {
+    profile.nonce = decodedAuthData.requestedNonce;
+  }
   
-  if (decodedAuthData.requestedScope.includes("advanced")) {
+  if (appData.scope.includes("advanced")) {
     profile.gender = session.user.gender;
     profile.dateOfBirth = session.user.dateOfBirth;
     profile.country = session.user.country;
@@ -66,7 +71,7 @@ export default async function prepareOAuthRedirect() {
   const { token: idToken, expireOn: idTokenExpireOn } = await getToken({ payload: profile, secret: privateSecret, expiresIn: 300, algorithm: "RS256" });
   const authCode = await stringPromise;
 
-  const dataSet = {
+  const dataSet: PrepareOAuthDataType = {
     authCode: {
       code: authCode,
       expireOn: authCodeExpireOn
@@ -86,8 +91,14 @@ export default async function prepareOAuthRedirect() {
     appId: decodedAuthData.requestedClientId,
     userId: session.user.id,
     requestData: decodedAuthData
-  } as PrepareOAuthDataType;
+  }
 
-  await db.collection("OAuthRequests").doc(decodedAuthData.requestedClientId + session.user.id).set(dataSet);
-  return redirect(`${decodedAuthData.requestedRedirectUri}?code=${authCode}&state=${decodedAuthData.requestedState}`);
+  await db.collection("OAuthRequests").doc(decodedAuthData.requestedClientId + "-" + session.user.id).set(dataSet);
+
+  const redirectTo = new URL(decodedAuthData.requestedRedirectUri);
+  redirectTo.searchParams.append("code", authCode)
+  if (decodedAuthData.requestedState) {
+    redirectTo.searchParams.append("state", decodedAuthData.requestedState);
+  }
+  return redirect(redirectTo.toString());
 }

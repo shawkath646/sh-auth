@@ -6,7 +6,9 @@ import Credentials from "next-auth/providers/credentials";
 import getUser from "@/actions/database/getUser";
 import validateUser from "@/actions/database/validateUser";
 import saveLoginHistory from "@/actions/database/saveLoginHistory";
+import timeStampToDate from "@/utils/timeStampToDate";
 import { CustomSessionType, UserDataType } from "@/types/types";
+
 
 export const authConfig = {
     providers: [
@@ -39,9 +41,9 @@ export const authConfig = {
       },
       async session({ session, token }): Promise<CustomSessionType> {
         if (session.user) {
-          const { id, email, emailVerified, phoneNumber, username, firstName, lastName, dateOfBirth, gender, isEnterpriseUser, country } = token;
+          const { id, email, emailVerified, phoneNumber, phoneNumberVerified, username, firstName, lastName, dateOfBirth, gender, isEnterpriseUser, country } = token;
           Object.assign(session.user, { 
-            id, email, emailVerified, gender, phoneNumber, username, firstName, lastName, dateOfBirth, isEnterpriseUser, country
+            id, email, emailVerified, gender, phoneNumber, phoneNumberVerified, username, firstName, lastName, dateOfBirth, isEnterpriseUser, country
           });
           if (session.user.id) await saveLoginHistory(session.user.id);
         }
@@ -56,10 +58,12 @@ export const authConfig = {
             const emailVerified = contactInfo.email.find(e => e.type === "primary")?.verified;
             const firstName = personalData.firstName;
             const lastName = personalData.lastName;
-            const phoneNumber = contactInfo.phoneNumber[0];
-            const { dateOfBirth, gender } = personalData;
+            const phoneNumber = contactInfo.phoneNumber[0].countryCode + contactInfo.phoneNumber[0].number;
+            const phoneNumberVerified = contactInfo.phoneNumber[0].verified;
+            const { gender } = personalData;
+            const dateOfBirth = timeStampToDate(personalData.dateOfBirth);
             const country = personalData.address.permanent.country;
-            Object.assign(token, { id, email: primaryEmail, emailVerified, phoneNumber, username, firstName, lastName, dateOfBirth, gender, isEnterpriseUser, country });
+            Object.assign(token, { id, email: primaryEmail, emailVerified, phoneNumber, phoneNumberVerified, username, firstName, lastName, dateOfBirth, gender, isEnterpriseUser, country });
           }
         }
         return token;

@@ -1,10 +1,17 @@
-"use server";
 import { redirect } from "next/navigation";
+import { cache } from "react";
 import { db } from "@/config/firebase.config";
+import timeStampToDate from "@/utils/timeStampToDate";
 import { AppDataType } from "@/types/types";
 
-export default async function getAppData(appId: string) {
+
+const getAppData = cache(async(appId: string) => {
     const appDoc = await db.collection("apps").doc(appId).get();
     if (!appDoc.exists) return redirect('/error?code=M018');
-    return appDoc.data() as AppDataType;
-}
+    const data = appDoc.data() as AppDataType;
+    data.createdOn = timeStampToDate(data.createdOn);
+    if (data.inactiveUntil) data.inactiveUntil = timeStampToDate(data.inactiveUntil);
+    return data;
+});
+
+export default getAppData;

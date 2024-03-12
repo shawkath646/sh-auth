@@ -1,42 +1,52 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as crypto from "crypto";
 import { getOAuthDataByAuthCode } from "@/actions/database/oAuth/getOAuthData";
+import getAppData from "@/actions/database/getAppData";
 
-interface ResponseType {
-    redirect_uri: string;
-    code_verifier: "SHA256" | "plain";
-    code: string;
-    grant_type: "authorization_code"
-    | "refresh_token"
-}
 
 export async function POST(request: NextRequest) {
 
-    const recievedResponse = await request.text();
-    const decodedResponse = decodeURIComponent(recievedResponse);
-    let responseAsObject;
-    const now = new Date();
+    const authorizationCode = request.headers.get("authorization");
+    if (!authorizationCode) return NextResponse.json({ error_description: "This request is invalid due to the absence of required credential fields.", error: "invalid_request" }, { status: 301 });
+
+    let decodedString;
 
     try {
-        responseAsObject = JSON.parse('{"' + decodedResponse.replace(/&/g, '","').replace(/=/g, '":"') + '"}') as ResponseType;
+        const filteredAuthorizationCode = authorizationCode.startsWith("Basic ") ? authorizationCode.replace("Basic ", "") : authorizationCode;
+        const codeBuffer = Buffer.from(filteredAuthorizationCode, "base64");
+        decodedString = codeBuffer.toString('utf8');
     } catch (error) {
-        return NextResponse.json({ error_description: "The request is missing a required parameter or contains an invalid parameter.", error: "invalid_request" }, { status: 301 });
+        return NextResponse.json({ error_description: "This request is invalid due to invalid credential fields.", error: "invalid_request" }, { status: 301 });
     }
 
-    if (responseAsObject.grant_type === "authorization_code" && responseAsObject.code) {
+    const [requestedAppId, requestedAppSecret] = decodedString.split(":");
+    const requestedAppData = await getAppData(requestedAppId);
+    if (requestedAppData.appSecret !== requestedAppSecret) return NextResponse.json({ error_description: "The provided access grant is invalid, expired, or revoked.", error: "invalid_grant" }, { status: 400 });
 
-        const recievedData = await getOAuthDataByAuthCode(responseAsObject.code);
-        if (!recievedData) return NextResponse.json({ error_description: "The provided access grant is invalid, expired, or revoked.", error: "invalid_grant" }, { status: 400 });
+    const resolvedURL = new URL(await request.text(), request.url);
+    const searchParams = new URLSearchParams(resolvedURL.toString());
+
+    const requestedGrantType = searchParams.get("grant_type");
+    const requestedCode = searchParams.get("code");
+    const requestedCodeVerifier = searchParams.get("code_verifier");
+
+    
+
+    const now = new Date();
+    if (requestedGrantType === "authorization_code" && requestedCode) {
         
+        const recievedData = await getOAuthDataByAuthCode(requestedCode);
+        if (!recievedData) return NextResponse.json({ error_description: "The provided access grant is invalid, expired, or revoked.", error: "invalid_grant" }, { status: 400 });
+
         let codeVerifierValid: boolean = false;
-        if (recievedData.requestData.requestedCodeChallengeMethod === "plain") codeVerifierValid =  recievedData.requestData.requestedCodeChallenge === responseAsObject.code_verifier;
-        else if (recievedData.requestData.requestedCodeChallengeMethod === "S256") {
-            const codeChallenge = crypto.createHash('sha256').update(responseAsObject.code_verifier).digest('base64');
+        if (recievedData.requestData.requestedCodeChallengeMethod === "plain" && requestedCodeVerifier) codeVerifierValid = recievedData.requestData.requestedCodeChallenge === requestedCodeVerifier;
+        else if (recievedData.requestData.requestedCodeChallengeMethod === "S256" && requestedCodeVerifier) {
+            const codeChallenge = crypto.createHash('sha256').update(requestedCodeVerifier).digest('base64');
             codeVerifierValid = recievedData.requestData.requestedCodeChallenge === codeChallenge.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
         }
         if (!codeVerifierValid) return NextResponse.json({ error_desciption: "The provided code challenge is invalid.", error: "invalid_grant" }, { status: 400 });
 
-        const isAuthCodeValid = recievedData.authCode.code !== responseAsObject.code || (now > recievedData.authCode.expireOn);
+        const isAuthCodeValid = recievedData.authCode.code !== requestedCode || (now > recievedData.authCode.expireOn);
         if (!isAuthCodeValid) NextResponse.json({ error_description: "Resource owner authentication failed", error: "invalid_grant" }, { status: 400 });
 
 

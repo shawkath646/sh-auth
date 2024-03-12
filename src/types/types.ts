@@ -149,7 +149,7 @@ export interface ProfileType {
   family_name: string;
   aud: string;
   iss: string;
-  nonce: string;
+  nonce?: string;
   gender?: string;
   dateOfBirth?: Date | TimestampFieldValue | Timestamp;
   country?: string;
@@ -258,5 +258,5 @@ export interface PrepareOAuthDataType {
   };
   userId: string;
   appId: string;
-  requestData: CookieJsonType
+  requestData: CookieJsonType;
 }

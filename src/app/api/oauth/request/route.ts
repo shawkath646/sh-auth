@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
     const requestedNonce = searchParams.get("nonce");
     const requestedResponseType = searchParams.get("response_type");
 
-    if (!requestedClientId || !requestedRedirectUri || !requestedCodeChallenge || !requestedCodeChallengeMethod || !requestedScope || !requestedResponseType || !requestedState || !requestedNonce) return NextResponse.redirect(new URL("/error?code=M019", request.url));
+    if (!requestedClientId || !requestedRedirectUri || !requestedCodeChallenge || !requestedCodeChallengeMethod || !requestedScope) return NextResponse.redirect(new URL("/error?code=M019", request.url));
 
     const response = { requestedClientId, requestedRedirectUri, requestedCodeChallenge, requestedCodeChallengeMethod, requestedScope, requestedResponseType, requestedState, requestedNonce };
 

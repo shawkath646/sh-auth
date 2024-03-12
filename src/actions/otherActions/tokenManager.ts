@@ -8,9 +8,9 @@ interface ExtendedParams extends jwt.SignOptions {
 
 const secretKey = process.env.JWT_AUTH_SECRET || '2780a4d8341f0a312f093765120aac9f';
 
-async function verifyToken(token: string) {
+async function verifyToken(token: string, secret: string = secretKey) {
     try {
-        const decoded = jwt.verify(token, secretKey);
+        const decoded = jwt.verify(token, secret);
         return decoded;
     } catch (err) {
         return null;

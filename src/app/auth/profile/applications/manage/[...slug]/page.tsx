@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import getAppData from "@/actions/database/getAppData";
 import ManageBox from "./ManageBox";
 import DeleteButton from "./DeleteButton";
-import timeStampToDate from "@/utils/timeStampToDate";
 import { IoIosArrowBack } from "react-icons/io";
 
 export const metadata: Metadata = {
@@ -13,11 +12,8 @@ export const metadata: Metadata = {
 
 export default async function Page({ params }: { params: { slug: string } }) {
 
-    if (!params.slug.length) redirect("/error?code=No slug");
+    if (!params.slug.length) redirect("/error?code=M018");
     const appData = await getAppData(params.slug[0]);
-
-    appData.createdOn = await timeStampToDate(appData.createdOn);
-    if (appData.inactiveUntil) appData.inactiveUntil = await timeStampToDate(appData.inactiveUntil);
 
     return (
         <main className="min-h-screen bg-white dark:bg-black text-black dark:text-gray-200 w-full">

@@ -9,7 +9,6 @@ import ButtonsContainer from "./ButtonsContainer";
 import { CustomSessionType } from "@/types/types";
 import blankUserProfile from "@/assets/blank_user_profile.png";
 import bgBanner from "@/assets/background_signin.jpg";
-import timeStampToDate from "@/utils/timeStampToDate";
 import getOAuthInformationCookie from "@/actions/oAuth/getOAuthInformationCookie";
 
 export const metadata: Metadata = {
@@ -26,8 +25,6 @@ export default async function Page() {
     const brandData = await getBrandData();
     const session = await auth() as CustomSessionType;
     const userAgent = await getUserAgentData();
-
-    const dateOfBirth = await timeStampToDate(session.user.dateOfBirth);
 
     return (
         <main className="min-h-screen w-full relative">
@@ -76,7 +73,7 @@ export default async function Page() {
                                         Date of Birth
                                     </th>
                                     <td className="px-3 py-4 dark:text-gray-300">
-                                        {formatDate(dateOfBirth as Date)}
+                                        {formatDate(session.user.dateOfBirth as Date)}
                                     </td>
                                 </tr>
                                 <tr className="dark:bg-gray-800 bg-white border-b dark:border-gray-900">

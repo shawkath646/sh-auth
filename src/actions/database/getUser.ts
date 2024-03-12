@@ -1,11 +1,11 @@
-"use server";
+import { cache } from "react";
 import { QueryDocumentSnapshot } from "firebase-admin/firestore";
 import { db } from "@/config/firebase.config";
 import { EmailType, UserDataType } from "@/types/types";
 
 
-export default async function getUser(info: string) {
 
+const getUser = cache(async(info: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const usernameRegex = /^[a-zA-Z0-9]+$/;
 
@@ -32,4 +32,6 @@ export default async function getUser(info: string) {
     if (filteredUser.length === 0) return;
 
     return filteredUser[0].data() as UserDataType;
-}
+})
+
+export default getUser;
