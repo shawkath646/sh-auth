@@ -44,7 +44,7 @@ export default async function Page() {
                             <Link href={`/auth/profile/applications/manage/${data.id}`} key={index} className="border border-gray-300 dark:border-gray-500 rounded-lg w-auto md:w-[400px] py-3 px-3 lg:px-5 mx-auto hover:scale-95 transition-all">
                                 <div className="flex items-center justify-between mb-5">
                                     <div className="flex items-center space-x-2">
-                                        {data.appIcon && <Image src={data.appIcon} height={20} width={20} alt={`${data.appName} icon`} />}
+                                        {data.appIcon && <Image src={data.appIcon} height={20} width={20} alt={`${data.appName} icon`} className="h-[20px] w-[20px]" />}
                                         <p className="lg:text-lg font-medium truncate">{data.appName}</p>
                                     </div>
                                     <p className={`py-0.5 px-1 ${data.status === "active" ? "bg-green-600 text-green-600" : ""} ${data.status === "inactive" ? "bg-amber-600 text-amber-600" : ""} ${data.status === "suspended" ? "bg-red-600 text-red-600" : ""} bg-opacity-20 rounded text-xs lg:text-sm font-semibold`}>{toTitleCase(data.status)}</p>

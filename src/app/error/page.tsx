@@ -27,7 +27,7 @@ export default function Error({ searchParams }: { searchParams: { [key: string]:
             <div className="container h-screen mx-auto flex items-center justify-center p-5 lg:p-0">
                 <section className="space-y-6">
                     <div className="flex justify-center space-x-2 items-center">
-                        <Image src={shAuthenticationIcon.src} alt="SH authentication logo" width={30} height={30} />
+                        <Image src={shAuthenticationIcon.src} alt="SH authentication logo" width={30} height={30} className="h-[30px] w-[30px]" />
                         <p className="text-lg font-medium">SH authentication system</p>
                     </div>
                     <p className="text-7xl lg:text-9xl text-gray-600 dark:text-gray-400 font-extrabold text-center">{messageObject ? messageObject.code : 509}</p>

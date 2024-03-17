@@ -135,17 +135,17 @@ export default function SignInBox() {
 
                     <div className="space-y-2">
                         <button type="button" onClick={async () => await userSignIn('google')} className="w-[350px] mx-auto border border-gray-900 dark:border-gray-400 hover:border-gray-500 dark:hover:bg-gray-800 dark:hover:border-gray-800 hover:bg-gray-100 transition-all rounded-md py-1 flex items-center justify-center space-x-2">
-                            <Image src={iconGoogle.src} alt="google icon" height={16} width={16} />
+                            <Image src={iconGoogle.src} alt="google icon" height={16} width={16} className="h-[16px] w-[16px]" />
                             <p>Continue with Google</p>
                         </button>
 
                         <button type="button" disabled onClick={async () => await userSignIn('facebook')} className="w-[350px] mx-auto border border-gray-900 dark:border-gray-400 hover:border-gray-500 dark:hover:bg-gray-800 dark:hover:border-gray-800 hover:bg-gray-100 transition-all rounded-md py-1 flex items-center justify-center space-x-2 disabled:border-gray-300 disabled:text-gray-300 dark:disabled:border-gray-600 dark:disabled:text-gray-600">
-                            <Image src={iconFacebook.src} alt="facebook icon" height={16} width={16} />
+                            <Image src={iconFacebook.src} alt="facebook icon" height={16} width={16} className="h-[16px] w-[16px]" />
                             <p>Continue with Facebook</p>
                         </button>
 
                         <button type="button" onClick={async () => await userSignIn('github')} className="w-[350px] mx-auto border border-gray-900 dark:border-gray-400 hover:border-gray-500 dark:hover:bg-gray-800 dark:hover:border-gray-800 hover:bg-gray-100 transition-all rounded-md py-1 flex items-center justify-center space-x-2">
-                            <Image src={iconGithub.src} alt="github icon" height={16} width={16} />
+                            <Image src={iconGithub.src} alt="github icon" height={16} width={16} className="h-[16px] w-[16px]" />
                             <p>Continue with GitHub</p>
                         </button>
                     </div>

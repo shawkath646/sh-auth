@@ -13,7 +13,7 @@ export default async function Page() {
             <div className="container mx-auto p-3 lg:p-0">
                 <header className="pt-5">
                     <div className="flex items-center justify-center space-x-2 mb-8">
-                        {appData.appIcon && <Image src={appData.appIcon} alt={`${appData.appName} icon`} height={30} width={30} />}
+                        {appData.appIcon && <Image src={appData.appIcon} alt={`${appData.appName} icon`} height={30} width={30} className="h-[30px] w-[30px]" />}
                         <p className="text-lg md:text-xl lg:text-2xl font-bold">{appData.appName}</p>
                     </div>
                     <h2 className="text-lg md:text-xl lg:text-2xl font-bold mb-2">Privacy Policy</h2>

@@ -22,7 +22,7 @@ export default async function Home() {
         <header className="pt-5 z-20 relative p-3 lg:p-6 bg-black/40 lg:h-[500px]">
           <div className="container mx-auto lg:pt-10">
             <div className="flex items-center space-x-2">
-              {appData.appIcon && <Image src={appData.appIcon} alt={`${appData.appName} icon`} height={30} width={30} />}
+              {appData.appIcon && <Image src={appData.appIcon} alt={`${appData.appName} icon`} height={30} width={30} className="h-[30px] w-[30px]" />}
               <p className="text-xl md:text-2xl lg:text-3xl font-bold text-white dark:text-gray-200">{appData.appName}</p>
             </div>
             <p className="uppercase tracking-wide font-semibold text-blue-500 ml-10">Fast | Simple | Secured </p>

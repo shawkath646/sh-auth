@@ -22,7 +22,7 @@ export default async function Page() {
                 <div className="min-h-screen container mx-auto flex items-center justify-center">
                     <section className="w-[400px] lg:w-[450px] bg-white dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 p-8 lg:p-7 rounded-xl text-black dark:text-gray-200 shadow-lg">
                         <div className="flex justify-center space-x-2 items-center mb-10">
-                            {stockAppData?.appIcon && <Image src={stockAppData.appIcon} alt={`${stockAppData.appName} logo`} width={30} height={30} />}
+                            {stockAppData?.appIcon && <Image src={stockAppData.appIcon} alt={`${stockAppData.appName} logo`} width={30} height={30} className="h-[30px] w-[30px]" />}
                             <p className="text-lg font-medium">{stockAppData?.appName}</p>
                         </div>
                         <SignInBox />

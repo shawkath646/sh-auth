@@ -33,12 +33,12 @@ export default async function Page() {
                 <div className="min-h-screen container mx-auto flex items-center justify-center">
                     <section className="w-[400px] bg-white dark:bg-gray-900 bg-opacity-95 dark:bg-opacity-95 p-5 lg:p-7 rounded-xl text-black dark:text-gray-200 shadow-lg">
                         <div className="flex justify-center space-x-2 items-center">
-                            {stockAppData.appIcon && <Image src={stockAppData.appIcon} alt={`${stockAppData.appName} logo`} width={30} height={30} />}
+                            {stockAppData.appIcon && <Image src={stockAppData.appIcon} alt={`${stockAppData.appName} logo`} width={30} height={30} className="h-[30px] w-[30px]" />}
                             <p className="text-lg font-medium">{stockAppData.appName}</p>
                         </div>
 
                         <div className="relative mx-auto w-[100px] h-[100px]">
-                            <Image src={session.user.image || blankUserProfile.src} alt="User profile" width={90} height={90} className={`w-[100px] h-[100px] rounded-full mt-4 border-4 p-1 ${session.user.isEnterpriseUser ? "border-yellow-500" : "border-blue-500"}`} />
+                            <Image src={session.user.image || blankUserProfile.src} alt="User profile" width={100} height={100} className={`w-[100px] h-[100px] rounded-full mt-4 border-4 p-1 ${session.user.isEnterpriseUser ? "border-yellow-500" : "border-blue-500"}`} />
                             {session.user.isEnterpriseUser && <p className="absolute text-sm bg-yellow-200 text-yellow-600 rounded-2xl px-1.5 py-0.5 font-medium -right-7 bottom-0">Enterprise</p>}
                         </div>
                         <p className="text-gray-700 text-center dark:text-gray-300 mt-2">@{session.user.username}</p>
@@ -89,7 +89,7 @@ export default async function Page() {
                                         Requested by
                                     </th>
                                     <td className="px-3 py-4 dark:text-gray-300 flex items-center space-x-2">
-                                        {requestedAppData.appIcon && <Image src={requestedAppData.appIcon} width={20} height={20} alt={`${requestedAppData.appName} logo`} />}
+                                        {requestedAppData.appIcon && <Image src={requestedAppData.appIcon} width={20} height={20} alt={`${requestedAppData.appName} logo`} className="h-[20px] w-[20px]" />}
                                         <p>{requestedAppData.appName}</p>
                                     </td>
                                 </tr>

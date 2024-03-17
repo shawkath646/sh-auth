@@ -81,7 +81,7 @@ export default function SignUpBox({ stockAppIcon, stockAppName }: { stockAppIcon
             </section>
             <section className="p-5 lg:p-6 w-full">
                 <div className="flex items-center justify-center space-x-2 mx-auto">
-                    {stockAppIcon && <Image src={stockAppIcon} alt={`${stockAppName} logo`} width={30} height={30} />}
+                    {stockAppIcon && <Image src={stockAppIcon} alt={`${stockAppName} logo`} width={30} height={30} className="h-[30px] w-[30px]" />}
                     <p className="text-lg font-medium">{stockAppName}</p>
                 </div>
                 <p className="text-sm text-center mt-2 text-violet-500 font-medium mb-5">Before you go please fill up this form</p>
