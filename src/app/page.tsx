@@ -42,7 +42,7 @@ export default async function Home() {
       </div>
       <div className="container mx-auto">
         <div className="p-5 lg:p-0">
-          <p className="text-blue-500 text-lg md:text-xl lg:text-2xl lg:mt-10  md:mt-8 mt-5 font-medium text-center">NPM Package (Only for NextJS)</p>
+          <p className="text-blue-500 text-lg md:text-xl lg:text-2xl lg:mt-10  md:mt-8 mt-5 font-medium text-center">NPM Package (Only for NextJS 13+)</p>
           <section className="mt-8 grid lg:grid-cols-2">
             <div className="mx-auto text-center">
               <h3 className="mb-4 text-lg lg:text-2xl">SHAS App Controller</h3>
@@ -121,15 +121,16 @@ export default async function Home() {
               </ul>
             </div>
           </section>
-          <section className="flex items-center space-x-2">
+
+        </div>
+        <footer className="w-full">
+          <section className="flex items-center space-x-2 mb-4 mt-[80px]">
             <Link href={brandData.website}>
-              <Image src={brandData.icon} alt={`${brandData.name} icon`} height={100} width={150} />
+              <Image src={brandData.iconTransparent} alt={`${brandData.name} icon`} height={50} width={95} className="w-[95px] h-[50px]" />
             </Link>
             <p>A product of {brandData.name}</p>
           </section>
-        </div>
-        <footer className="w-full bg-gray-300 dark:bg-gray-800">
-          <p className="text-gray-800 dark:text-gray-400 py-1.5 text-center text-sm">{brandData.copyrightText}</p>
+          <p className=" bg-gray-300 dark:bg-gray-800 text-gray-800 dark:text-gray-400 py-1.5 text-center text-sm">{brandData.copyrightText}</p>
         </footer>
       </div>
     </main>

@@ -1,27 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as crypto from "crypto";
 import { getOAuthDataByAuthCode } from "@/actions/database/oAuth/getOAuthData";
-import getAppData from "@/actions/database/getAppData";
+import verifyAuthorization from "@/actions/oAuth/verifyAuthorization";
 
 
 export async function POST(request: NextRequest) {
 
     const authorizationCode = request.headers.get("authorization");
     if (!authorizationCode) return NextResponse.json({ error_description: "This request is invalid due to the absence of required credential fields.", error: "invalid_request" }, { status: 301 });
-
-    let decodedString;
-
-    try {
-        const filteredAuthorizationCode = authorizationCode.startsWith("Basic ") ? authorizationCode.replace("Basic ", "") : authorizationCode;
-        const codeBuffer = Buffer.from(filteredAuthorizationCode, "base64");
-        decodedString = codeBuffer.toString('utf8');
-    } catch (error) {
-        return NextResponse.json({ error_description: "This request is invalid due to invalid credential fields.", error: "invalid_request" }, { status: 301 });
-    }
-
-    const [requestedAppId, requestedAppSecret] = decodedString.split(":");
-    const requestedAppData = await getAppData(requestedAppId);
-    if (requestedAppData.appSecret !== requestedAppSecret) return NextResponse.json({ error_description: "The provided access grant is invalid, expired, or revoked.", error: "invalid_grant" }, { status: 400 });
+    const isAuthorizationCodeValid = await verifyAuthorization(authorizationCode);
+    if (!isAuthorizationCodeValid) return NextResponse.json({ error_description: "The provided access grant is invalid, expired, or revoked.", error: "invalid_grant" }, { status: 400 });
 
     const resolvedURL = new URL(await request.text(), request.url);
     const searchParams = new URLSearchParams(resolvedURL.toString());

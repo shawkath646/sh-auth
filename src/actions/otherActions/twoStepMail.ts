@@ -142,7 +142,7 @@ export async function sendTwoStepMail(destination: string, fullName: string, ver
                         <footer>
                             <section class="brandng-section">
                                 <a href="${brandData.website}" class="parent-branding">
-                                    <img src="${brandData.icon}" alt="${brandData.name} icon" class="parent-logo" />
+                                    <img src="${brandData.iconTransparent}" alt="${brandData.name} icon" class="parent-logo" />
                                     <p class="parent-text">${brandData.name}</p>
                                 </a>
                                 <p class="branding-text">An innovative solution developed under the auspices of our parent company, CloudBurst Lab, brings cutting-edge technology directly to your fingertips.</p>

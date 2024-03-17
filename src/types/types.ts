@@ -207,7 +207,7 @@ export interface PartialAppDataType {
 export interface BrandDataType {
   category: string;
   name: string;
-  icon: string;
+  iconTransparent: string;
   email: string;
   type: string;
   help: string;
@@ -215,6 +215,8 @@ export interface BrandDataType {
   privacyPolicy: string;
   socialPlatform: SocialPlatformInfo[];
   website: string;
+  iconWhite: string;
+  slogan: string;
 }
 
 export interface SocialPlatformInfo {
