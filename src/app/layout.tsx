@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 import SHAS from "shas-app-controller";
 import GlobalLayoutWrapper from "@/components/layout/GlobalLayoutWrapper";
 import "./globals.css";
@@ -52,7 +52,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         <ContentWrapper>
           <GlobalLayoutWrapper>{children}</GlobalLayoutWrapper>
         </ContentWrapper>
-        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
