@@ -24,16 +24,13 @@ import registrationBoxCover from "@/assets/registration_box_cover.jpg";
 export default function SignUpBox({ stockAppIcon, stockAppName }: { stockAppIcon: string; stockAppName: string }) {
 
     const [signupStatus, setSignupStatus] = useState<StatusType>({ status: "initial", message: "" });
-    const [isLoading, setLoading] = useState<boolean>(false);
 
-    const { control, register, formState: { errors }, handleSubmit, clearErrors, setError } = useForm<RegistrationBoxInputType>({
+    const { control, register, formState: { errors, isSubmitting }, handleSubmit, clearErrors, setError } = useForm<RegistrationBoxInputType>({
         resolver: yupResolver(signUpFormSchema),
     });
 
     const onSubmit: SubmitHandler<RegistrationBoxInputType> = async (data) => {
         try {
-            setLoading(true);
-
             const registrationResponse = await newUserRegistration(data);
             setSignupStatus(registrationResponse as StatusType);
 
@@ -45,7 +42,6 @@ export default function SignUpBox({ stockAppIcon, stockAppName }: { stockAppIcon
 
                 if (loginResponse) setSignupStatus(loginResponse as StatusType);
             }
-            setLoading(false);
         } catch (error) {
             setSignupStatus({ status: "error", message: error?.toString() || MessageList.M009.message });
         }
@@ -311,9 +307,9 @@ export default function SignUpBox({ stockAppIcon, stockAppName }: { stockAppIcon
                     <span>, encompassing the responsible use of your data and adherence to platform guidelines.</span>
                 </p>
 
-                <button type="submit" disabled={isLoading} className="flex items-center space-x-2  justify-center mt-5 bg-violet-500 hover:bg-violet-600 shadow-xl outline-none shadow-violet-300 dark:shadow-violet-900 text-white disabled:bg-gray-400 hover:text-gray-200 py-1.5 w-full rounded-md transition-all">
-                    {isLoading && <CgSpinner size={20} className="animate-spin" />}
-                    <p>{isLoading ? "Please wait..." : "Confirm"}</p>
+                <button type="submit" disabled={isSubmitting} className="flex items-center space-x-2  justify-center mt-5 bg-violet-500 hover:bg-violet-600 shadow-xl outline-none shadow-violet-300 dark:shadow-violet-900 text-white disabled:bg-gray-400 hover:text-gray-200 py-1.5 w-full rounded-md transition-all">
+                    {isSubmitting && <CgSpinner size={20} className="animate-spin" />}
+                    <p>{isSubmitting ? "Please wait..." : "Confirm"}</p>
                 </button>
             </section>
         </form>

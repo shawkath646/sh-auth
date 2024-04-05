@@ -17,10 +17,9 @@ import "react-datepicker/dist/react-datepicker.css";
 
 export default function CreateNewBox() {
 
-    const [isLoading, setLoading] = useState(false);
     const [isAccepted, setAccepted] = useState(false);
 
-    const { control, register, handleSubmit, watch, clearErrors, setError, formState: { errors } } = useForm<PartialAppDataType>({
+    const { control, register, handleSubmit, watch, clearErrors, setError, formState: { errors, isSubmitting } } = useForm<PartialAppDataType>({
         resolver: yupResolver(registerAppSchema),
         defaultValues: {
             redirectUrl: []
@@ -30,7 +29,6 @@ export default function CreateNewBox() {
     const { status: inactiveSelected } = watch();
 
     const onSubmit: SubmitHandler<PartialAppDataType> = async (data) => {
-        setLoading(true);
         await registerApp(data);
     }
 
@@ -243,9 +241,9 @@ export default function CreateNewBox() {
                     <label htmlFor="agree" className="ml-2">I have read and agree to the above policies and rules.</label>
                 </div>
                 <div className="text-center lg:text-right w-full">
-                    <button type="submit" disabled={isLoading || !isAccepted} className="w-full md:w-auto px-4 mx-auto md:mr-0 py-1.5 rounded bg-sky-800 mt-8 text-white dark:text-gray-200 hover:bg-blue-900 transition-all flex items-center justify-center space-x-2 disabled:bg-gray-500">
-                        {isLoading ? <CgSpinner size={20} className="animate-spin" /> : <CgPlayListAdd size={20} />}
-                        <p>{isLoading ? "Please wait..." : "Register"}</p>
+                    <button type="submit" disabled={isSubmitting || !isAccepted} className="w-full md:w-auto px-4 mx-auto md:mr-0 py-1.5 rounded bg-sky-800 mt-8 text-white dark:text-gray-200 hover:bg-blue-900 transition-all flex items-center justify-center space-x-2 disabled:bg-gray-500">
+                        {isSubmitting ? <CgSpinner size={20} className="animate-spin" /> : <CgPlayListAdd size={20} />}
+                        <p>{isSubmitting ? "Please wait..." : "Register"}</p>
                     </button>
                 </div>
             </section>

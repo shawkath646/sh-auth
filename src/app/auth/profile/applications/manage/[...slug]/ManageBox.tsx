@@ -27,7 +27,6 @@ import CopierButton from "@/components/universel/CopierButton";
 export default function ManageBox({ appData }: { appData: AppDataType }) {
 
     const [isEditMode, setEditMode] = useState(false);
-    const [isLoading, setLoading] = useState(false);
     const [statusMessage, setStatusMessage] = useState<StatusType>({
         status: "success",
         message: ""
@@ -54,9 +53,8 @@ export default function ManageBox({ appData }: { appData: AppDataType }) {
         pageAlertMessage
     };
 
-    const { control, register, handleSubmit, clearErrors, reset, setError, formState: { errors } } = useForm<PartialAppDataType>({
-        resolver: yupResolver(registerAppSchema),
-        defaultValues
+    const { control, register, handleSubmit, clearErrors, reset, setError, formState: { errors, isSubmitting } } = useForm<PartialAppDataType>({
+        resolver: yupResolver(registerAppSchema)
     });
 
 
@@ -64,8 +62,6 @@ export default function ManageBox({ appData }: { appData: AppDataType }) {
     const applicationStatus = ["Active", "Inactive"];
 
     const onSubmit: SubmitHandler<PartialAppDataType> = async (data) => {
-        setLoading(true);
-
         const newObject: Partial<AppDataType> = Object.keys(data).reduce((acc, key) => {
             const appDataValue = appData[key as keyof AppDataType];
             const dataValue = data[key as keyof PartialAppDataType];
@@ -87,7 +83,6 @@ export default function ManageBox({ appData }: { appData: AppDataType }) {
                 status: "error",
                 message: "No changes have been made to update"
             });
-            setLoading(false);
             return;
         }
 
@@ -96,7 +91,6 @@ export default function ManageBox({ appData }: { appData: AppDataType }) {
         const response = await updateApp(newObject, appData.appIcon);
         setStatusMessage(response);
         setEditMode(false);
-        setLoading(false);
     }
 
     const handleSecretReset = async () => {
@@ -328,13 +322,13 @@ export default function ManageBox({ appData }: { appData: AppDataType }) {
                 <p className={`${statusMessage.status === "error" ? "bg-red-500/20 text-red-500" : "bg-green-500/20 text-green-500"} text-sm font-medium max-w-[400px] mx-auto py-1.5 text-center rounded mt-5`}>{statusMessage.message}</p>
             )}
             <div className="flex items-center justify-end mt-8 space-x-3">
-                <button type="button" disabled={isLoading} onClick={() => reset()} className="px-3 py-1 lg:py-1.5 text-white dark:text-gray-200 bg-blue-600 hover:bg-blue-700 transition-all rounded flex items-center justify-center space-x-2 disabled:bg-gray-500">
+                <button type="button" disabled={isSubmitting} onClick={() => reset()} className="px-3 py-1 lg:py-1.5 text-white dark:text-gray-200 bg-blue-600 hover:bg-blue-700 transition-all rounded flex items-center justify-center space-x-2 disabled:bg-gray-500">
                     <BiReset size={18} />
                     <p>Reset</p>
                 </button>
-                <button type="submit" disabled={isLoading} className="px-3 py-1 lg:py-1.5 text-white dark:text-gray-200 bg-violet-600 hover:bg-violet-700 rounded flex items-center justify-center space-x-2 disabled:bg-gray-500 transition-all">
-                    {isLoading && <CgSpinner size={18} className="animate-spin" />}
-                    <p>{isLoading ? "Please wait..." : "Update"}</p>
+                <button type="submit" disabled={isSubmitting} className="px-3 py-1 lg:py-1.5 text-white dark:text-gray-200 bg-violet-600 hover:bg-violet-700 rounded flex items-center justify-center space-x-2 disabled:bg-gray-500 transition-all">
+                    {isSubmitting && <CgSpinner size={18} className="animate-spin" />}
+                    <p>{isSubmitting ? "Please wait..." : "Update"}</p>
                 </button>
             </div>
         </form>

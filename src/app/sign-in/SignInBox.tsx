@@ -22,7 +22,6 @@ interface UserCredintialExtendedType extends UserCredintialType {
 
 export default function SignInBox() {
 
-    const [isLoading, setLoading] = useState<boolean>(false);
     const [isTwoStep, setTwoStep] = useState<TwoStepType>({
         isEnabled: false,
         expireOn: new Date()
@@ -33,12 +32,11 @@ export default function SignInBox() {
         message: ""
     });
 
-    const { register, formState: { errors }, getValues, handleSubmit } = useForm<UserCredintialExtendedType>({
+    const { register, formState: { errors, isSubmitting }, getValues, handleSubmit } = useForm<UserCredintialExtendedType>({
         resolver: yupResolver(signInFormSchema)
     });
 
     const onSubmit: SubmitHandler<UserCredintialExtendedType> = async (data) => {
-        setLoading(true);
         let response: StatusType;
 
         if (isTwoStep.isEnabled && (!data.twoStepCode || data.twoStepCode.toString().length !== 6)) {
@@ -46,7 +44,6 @@ export default function SignInBox() {
                 status: "error",
                 message: "Invalid Verification code",
             });
-            setLoading(false);
             return;
         }
 
@@ -55,8 +52,6 @@ export default function SignInBox() {
             if ('twoStep' in response) setTwoStep(response.twoStep as TwoStepType);
             setLoginStatus({ status: response.status, message: response.message });
         }
-
-        setLoading(false);
     };
 
     const handleResend = async () => {
@@ -117,9 +112,9 @@ export default function SignInBox() {
                         </p>
                     </div>
                 )}
-                <button type="submit" disabled={isLoading} className="bg-blue-500 hover:bg-blue-600 hover:text-gray-300 transition-all w-full mx-auto disabled:bg-gray-500 py-1.5 rounded-md text-white dark:text-gray-200 flex items-center justify-center space-x-2">
-                    {isLoading && <CgSpinner size={20} className="animate-spin" />}
-                    <p>{isLoading ? "Please wait..." : (isTwoStep.isEnabled ? "Submit" : "Login")}</p>
+                <button type="submit" disabled={isSubmitting} className="bg-blue-500 hover:bg-blue-600 hover:text-gray-300 transition-all w-full mx-auto disabled:bg-gray-500 py-1.5 rounded-md text-white dark:text-gray-200 flex items-center justify-center space-x-2">
+                    {isSubmitting && <CgSpinner size={20} className="animate-spin" />}
+                    <p>{isSubmitting ? "Please wait..." : (isTwoStep.isEnabled ? "Submit" : "Login")}</p>
                 </button>
             </form>
 
