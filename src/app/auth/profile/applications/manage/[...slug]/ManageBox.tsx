@@ -54,7 +54,8 @@ export default function ManageBox({ appData }: { appData: AppDataType }) {
     };
 
     const { control, register, handleSubmit, clearErrors, reset, setError, formState: { errors, isSubmitting } } = useForm<PartialAppDataType>({
-        resolver: yupResolver(registerAppSchema)
+        resolver: yupResolver(registerAppSchema),
+        defaultValues
     });
 
 
